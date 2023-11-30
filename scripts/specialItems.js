@@ -1,17 +1,17 @@
-const ModuleName = "enhancedcombathud-vaesen";
+import {ModuleName} from "./utils.js";
 
 const ItemReplacementID = "_argonUI_";
 
-var VaesenECHSlowItems = {};
+var MYZECHActionItems = {};
 
-var VaesenECHFastItems = {};
+var MYZECHManeuverItems = {};
 
-var VaesenECHReactionItems = {};
+var MYZECHReactionItems = {};
 
-function registerVaesenECHSItems () {
-	VaesenECHSlowItems = {
+function registerMYZECHSItems () {
+	MYZECHActionItems = {
 		groupflags : {
-			actiontype : "slow"
+			actiontype : "action"
 		},
 		Flee : {
 			img: "modules/enhancedcombathud/icons/svg/run.svg",
@@ -20,7 +20,7 @@ function registerVaesenECHSItems () {
 			system : {
 				description : game.i18n.localize(ModuleName+".Descriptions.Flee"),
 				skill : "agility",
-				vaesenattribute : "bodyControl"
+				MYZattribute : "bodyControl"
 			}
 		},
 		WPG : {
@@ -30,7 +30,7 @@ function registerVaesenECHSItems () {
 			system : {
 				description : game.i18n.localize(ModuleName+".Descriptions.WPG"),
 				skill : "force",
-				vaesenattribute : "might"
+				MYZattribute : "might"
 			}
 		},
 		Survey : {
@@ -40,7 +40,7 @@ function registerVaesenECHSItems () {
 			system : {
 				description : game.i18n.localize(ModuleName+".Descriptions.Survey"),
 				skill : "observation",
-				vaesenattribute : "bodyControl"
+				MYZattribute : "bodyControl"
 			}
 		},
 		TreatInjuries : {
@@ -50,23 +50,23 @@ function registerVaesenECHSItems () {
 			system : {
 				description : game.i18n.localize(ModuleName+".Descriptions.TreatInjuries"),
 				skill : "",
-				vaesenattribute : "bodyControl"
+				MYZattribute : "bodyControl"
 			}
 		}
 	}
 	
 	switch(game.settings.get(ModuleName, "TreatType")) {
 		case "physical" :
-			VaesenECHSlowItems.TreatInjuries.system.skill = "medicine";
+			MYZECHActionItems.TreatInjuries.system.skill = "medicine";
 			break;
 		case "mental" :
-			VaesenECHSlowItems.TreatInjuries.system.skill = "inspiration";
+			MYZECHActionItems.TreatInjuries.system.skill = "inspiration";
 			break;
 	}
 	
-	VaesenECHFastItems = {
+	MYZECHManeuverItems = {
 		groupflags : {
-			actiontype : "fast"
+			actiontype : "maneuver"
 		},
 		DrawWeapon : {
 			img: "icons/svg/sword.svg",
@@ -102,7 +102,7 @@ function registerVaesenECHSItems () {
 		}
 	}
 	
-	VaesenECHReactionItems = {
+	MYZECHReactionItems = {
 		groupflags : {
 			actiontype : "react"
 		},
@@ -113,7 +113,7 @@ function registerVaesenECHSItems () {
 			system : {
 				description : game.i18n.localize(ModuleName+".Descriptions.Dodge"),
 				skill : "agility",
-				vaesenattribute : "bodyControl"
+				MYZattribute : "bodyControl"
 			}
 		},
 		Parry : {
@@ -123,7 +123,7 @@ function registerVaesenECHSItems () {
 			system : {
 				description : game.i18n.localize(ModuleName+".Descriptions.Parry"),
 				skill : ["closeCombat", "force"],
-				vaesenattribute : "might"
+				MYZattribute : "might"
 			}
 		},
 		BreakFree : {
@@ -133,7 +133,7 @@ function registerVaesenECHSItems () {
 			system : {
 				description : game.i18n.localize(ModuleName+".Descriptions.BreakFree"),
 				skill : "force",
-				vaesenattribute : "might"
+				MYZattribute : "might"
 			}
 		},
 		Chase : {
@@ -143,13 +143,13 @@ function registerVaesenECHSItems () {
 			system : {
 				description : game.i18n.localize(ModuleName+".Descriptions.Chase"),
 				skill : "agility",
-				vaesenattribute : "bodyControl"
+				MYZattribute : "bodyControl"
 			}
 		}
 	}
 	
 	//some preparation
-	for (let itemset of [VaesenECHSlowItems, VaesenECHFastItems, VaesenECHReactionItems]) {
+	for (let itemset of [MYZECHActionItems, MYZECHManeuverItems, MYZECHReactionItems]) {
 		for (let itemkey of Object.keys(itemset)) {
 			if (itemkey != "groupflags") {
 				itemset[itemkey].flags = {};
@@ -167,4 +167,4 @@ function registerVaesenECHSItems () {
 	}
 }
 
-export {registerVaesenECHSItems, VaesenECHSlowItems, VaesenECHFastItems, VaesenECHReactionItems}
+export {registerMYZECHSItems, MYZECHActionItems, MYZECHManeuverItems, MYZECHReactionItems}

@@ -1,230 +1,165 @@
-import {registerVaesenECHSItems, VaesenECHSlowItems, VaesenECHFastItems, VaesenECHReactionItems} from "./specialItems.js";
-import {getTooltipDetails, openRollDialoge} from "./utils.js";
-
-const ModuleName = "enhancedcombathud-vaesen";
+import {registerMYZECHSItems, MYZECHActionItems, MYZECHManeuverItems, MYZECHReactionItems} from "./specialItems.js";
+import {ModuleName, getTooltipDetails, openRollDialoge, openItemRollDialoge} from "./utils.js";
 
 Hooks.on("argonInit", (CoreHUD) => {
     const ARGON = CoreHUD.ARGON;
   
-	registerVaesenECHSItems();
+	registerMYZECHSItems();
   
-    class VaesenPortraitPanel extends ARGON.PORTRAIT.PortraitPanel {
+    class MYZPortraitPanel extends ARGON.PORTRAIT.PortraitPanel {
 		constructor(...args) {
 			super(...args);
-
-			Hooks.on("deleteActiveEffect", this.onEffectUpdate.bind(this));
-			Hooks.on("createActiveEffect", this.onEffectUpdate.bind(this));
 		}
 
 		get description() {
-			const { type, system } = this.actor;
-			const actor = this.actor;
+			const { system } = this.actor;
 			
-			switch (type) {
-				case "player":
-					return `${system.bio.archetype}`;
-					break;
-				case "npc":
-					break;
-				case "vaesen":
-					break;
-				case "headquater":
-					return `${system.bio.building}, ${system.bio.location}`;
-					break;
-				default:
-					return "";
-					break;
-			}
+			return `${system.role}, ${system.rank}`;
 		}
 
 		get isDead() {
-			if (this.actor.type == "player") {
-				return this.actor.system.condition.mental?.isBroken || this.actor.system.condition.physical?.isBroken;
-			}
-			
-			if (this.actor.type == "npc") {
-				return this.actor.system.condition.mental?.value == 0 || this.actor.system.condition.physical?.value == 0;
-			}
-			
-			return false;
-		}
-		
-		async getConditionIcons() {
-			let LeftIcons = [];
-			let RightIcons = [];
-			
-			switch (this.actor.type) {
-				case "player":
-					const playerConditions = this.actor.system.condition;
-					
-					const PhysicalConditions = Object.keys(playerConditions.physical.states).filter(Key => playerConditions.physical.states[Key].isChecked);
-					const MentalConditions = Object.keys(playerConditions.mental.states).filter(Key => playerConditions.mental.states[Key].isChecked);
-			
-					LeftIcons = PhysicalConditions.map((Condition) => {	const ConditionInfo = CONFIG.vaesen.allConditions.find(ConditionInfo => ConditionInfo.id == Condition);
-					
-																		return {img : ConditionInfo.icon, description : ConditionInfo.label, key : Condition, click : () => {this.removeCondtion(Condition)}}});
-																			
-					RightIcons = MentalConditions.map((Condition) => {	const ConditionInfo = CONFIG.vaesen.allConditions.find(ConditionInfo => ConditionInfo.id == Condition);
-					
-																		return {img : ConditionInfo.icon, description : ConditionInfo.label, key : Condition, click : () => {this.removeCondtion(Condition)}}});
-					break;
-				case "vaesen":
-					const vaesenConditions = this.actor.items.filter(item => item.type == "condition" && item.system.active);
-					
-					let ConditionImages = []
-					
-					for (let i = 0; i < vaesenConditions.length; i++) {
-						if (vaesenConditions[i].img == "icons/svg/item-bag.svg" && i <= 10) {
-							ConditionImages[i] = `systems/vaesen/asset/counter_tokens/${i+1}.png`; //nicer than a simple bag
-						}
-						else {
-							ConditionImages[i] = vaesenConditions[i].img;
-						}
-					}
-					
-					LeftIcons = vaesenConditions.map((Condition, i) => {return {
-						img : ConditionImages[i], 
-						description : Condition.name, 
-						key : Condition.id, 
-						click : async () => {
-							await this.actor.items.filter(item => item.type == "condition").reverse().find(item => item.system.active)?.update({system : {active : false}});
-							this.render()
-						}}});
-					break;
-			}
-						
-			return {left : LeftIcons, right : RightIcons}
+			return Object.values(this.actor.system.attributes).find(attribute => attribute.value <= 0);
 		}
 
 		async getStatBlocks() {
 			let ActiveArmor;
 			
-			switch (this.actor.type) {
-				case "player" :
-					ActiveArmor = this.actor.items.find(Item => Item.type == "armor" && Item.system.isFav); //serach for favoured armor
-					break;
-				case "npc" :
-				case "vaesen" :
-					ActiveArmor = this.actor.items.find(Item => Item.type == "armor"); //serach for favoured armor
-					break;				
-			}
-
-			const ArmorText = game.i18n.localize("ARMOR.NAME");
-			
-			let physical;
-			let mental;
-			
-			if (this.actor.type == "npc") {
-				physical = this.actor.system.condition.physical;
-				
-				mental = this.actor.system.condition.mental;
+			if (this.actor.system.armorrating.value > 0) {
+				ActiveArmor = this.actor.system.armorrating;			
 			}
 			
 			let Blocks = [];
 			
-			if (physical) {
-				Blocks.push([
-					{
-						text: game.i18n.localize("CONDITION.PHYSICAL"),
-					},
-					{
-						text: physical.value,
-					},
-					{
-						text: "/",
-					},
-					{
-						text: physical.max
-					},
-				]);				
-			}
-			
 			if (ActiveArmor) {
 				Blocks.push([
 					{
-						text: ArmorText,
+						text: game.i18n.localize(ActiveArmor.label),
 					},
 					{
-						text: ActiveArmor.system.protection,
+						text: ActiveArmor.value,
 						color: "var(--ech-movement-baseMovement-background)",
 					},
 				]);
 			}
 			
-			if (mental) {
-				Blocks.push([
-					{
-						text: game.i18n.localize("CONDITION.MENTAL"),
-					},
-					{
-						text: mental.value,
-					},
-					{
-						text: "/",
-					},
-					{
-						text: mental.max
-					},
-				]);				
+			return Blocks;
+		}
+		
+		async getsideStatBlocks() {
+			let attributes = this.actor.system.attributes;
+			
+			let Blocks = {left : [], right : []};
+			
+			for (let key of Object.keys(attributes)) {
+				if (attributes[key].value < attributes[key].max || key == "strength") {
+					let position = "";
+					
+					switch(key) {
+						case "agility" :
+						case "strength":
+							position = "left";
+							break;
+						case "empathy" :
+						case "wits":
+							position = "right";
+							break;
+					}
+					
+					Blocks[position].unshift([
+						{
+							text: game.i18n.localize(`MYZ.ATTRIBUTE_${key.toUpperCase()}_${this.actor.type.toUpperCase()}`).toUpperCase().slice(0,3),
+						},
+						{
+							text: attributes[key].value,
+						},
+						{
+							text: "/",
+						},
+						{
+							text: attributes[key].max
+						}
+					]);
+				}
 			}
 			
 			return Blocks;
 		}
 		
+		async getConditionIcons() {
+			let Icons = [];
+			
+			let rot = this.actor.system.rot;
+			
+			for (let i = 0; i < (rot.value + rot.permanent); i++) {
+				let permanent = i < rot.permanent;
+				
+				let description = rot.label;
+				
+				if (permanent) {
+					description = "MYZ.PERMA_ROT";
+				}
+				
+				Icons.push({img : "systems/mutant-year-zero/ui/dice-base-1.png", description : description, key : "rot", click : () => {}, border : permanent});
+			}
+						
+			return Icons;
+		}
+		
 		async _renderInner(data) {
 			await super._renderInner(data);
 			
-			//this.element.querySelector(".death-save-success").style.visibility = "hidden";
-			//this.element.querySelector(".death-save-fail").style.visibility = "hidden";
+			const statBlocks = await this.getsideStatBlocks();
+			for (const position of ["left", "right"]) {
+				const sb = document.createElement("div");
+				
+				sb.style = `position : absolute;${position} : 0px`;
+				
+				for (const block of statBlocks[position]) {
+					const sidesb = document.createElement("div");
+					sidesb.classList.add("portrait-stat-block");
+					for (const stat of block) {
+						if (!stat.position) {
+							const span = document.createElement("span");
+							span.innerText = stat.text;
+							span.style.color = stat.color;
+							sidesb.appendChild(span);
+						}
+					}
+					sb.appendChild(sidesb);
+				}
+				this.element.appendChild(sb);
+			}
 			
 			const ConditionIcons = await this.getConditionIcons();
 			
-			if (ConditionIcons) {
-				for (const Side of ["left", "right"]) {
-					const SideIcons = ConditionIcons[Side];
-					
-					if (SideIcons) {
-						const SideIconsBar = document.createElement("div");
-						SideIconsBar.classList.add("status-effects");
-						//top:50%;transform:translateY(-50%)
-						SideIconsBar.setAttribute("style", `position:absolute;${Side}:0;display:flex;flex-direction:column;bot:0`);
-						
-						for (const Icon of SideIcons) {
-							const IconImage =  document.createElement("img");
-							IconImage.classList.add("effect-control");
-							
-							IconImage.setAttribute("src", Icon.img);
-							IconImage.setAttribute("style", "width: 50px;border-width:0px");
-							IconImage.onclick = () => {Icon.click()};
-							IconImage.setAttribute("data-tooltip", Icon.description);
-							
-							SideIconsBar.appendChild(IconImage);
-						}
-						
-						this.element.appendChild(SideIconsBar);
+			if (ConditionIcons.length) {
+				const IconsBar = document.createElement("div");
+				//SideIconsBar.classList.add("");
+				IconsBar.setAttribute("style", `position:absolute;right:0;display:flex;flex-direction:column;align-self:center`);
+				for (const Icon of ConditionIcons) {
+					const IconImage =  document.createElement("img");
+					//IconImage.classList.add("rot-button roll-rot rollable");
+					IconImage.setAttribute("src", Icon.img);
+					IconImage.style.width = "25px";
+					IconImage.style.borderWidth = "0px";
+					if (Icon.border) {
+						IconImage.style.borderWidth = "3px";
+						IconImage.style.color = "var(--ech-portrait-base-border)";
 					}
+					IconImage.onclick = () => {Icon.click()};
+					IconImage.setAttribute("data-tooltip", Icon.description);
+					
+					IconsBar.appendChild(IconImage);
 				}
+				
+				this.element.appendChild(IconsBar);
 			}
-			
+					
 			this.element.querySelector(".player-buttons").style.right = "0%";
-		}
-		
-		async removeCondtion(ConditionKey) {
-			const currentEffect = this.actor.effects.find(Effect => Effect.name == ConditionKey.toUpperCase());
-			
-			if (currentEffect) {
-				this.actor.deleteEmbeddedDocuments('ActiveEffect', [currentEffect.id]);
-			}
-		}
-		
-		async onEffectUpdate(Effect) {
-			if (this.actor == Effect.parent) {
-				this.render();
-			}
 		}
 	}
 	
-	class VaesenDrawerPanel extends ARGON.DRAWER.DrawerPanel {
+	class MYZDrawerPanel extends ARGON.DRAWER.DrawerPanel {
 		constructor(...args) {
 			super(...args);
 		}
@@ -292,9 +227,6 @@ Hooks.on("argonInit", (CoreHUD) => {
 			if (skills) {
 				skillsButtons = skills.map((skill) => {
 					const skillData = skill.system;
-					
-					console.log(skill);
-					console.log(skillData);
 					
 					let valueLabel = `${skillData.value}<span style="margin: 0 1rem; filter: brightness(0.8)">(+${attributes[skillData.attribute].value})</span>`;
 					
@@ -397,7 +329,7 @@ Hooks.on("argonInit", (CoreHUD) => {
 		}
 	}
   
-    class VaesenSlowActionPanel extends ARGON.MAIN.ActionPanel {
+    class MYZActionActionPanel extends ARGON.MAIN.ActionPanel {
 		constructor(...args) {
 			super(...args);
 		}
@@ -420,30 +352,21 @@ Hooks.on("argonInit", (CoreHUD) => {
 		}
 		
 		async _getButtons() {
-			const specialActions = Object.values(VaesenECHSlowItems);
+			const specialActions = Object.values(MYZECHActionItems);
 
 			let buttons = [];
 			
-			buttons.push(new VaesenItemButton({ item: null, isWeaponSet: true, isPrimary: true }));
-			buttons.push(new ARGON.MAIN.BUTTONS.SplitButton(new VaesenSpecialActionButton(specialActions[0]), new VaesenSpecialActionButton(specialActions[1])));
-			
-			if (this.actor.type == "vaesen" || this.actor.type == "npc" && this.actor.items.find(item => item.type == "magic")) {
-				buttons.push(new VaesenButtonPanelButton({type: "magic", color: 0}));
-			}
-			
-			buttons.push(new VaesenButtonPanelButton({type: "gear", color: 0}));
-			
-			if (this.actor.type == "player" && this.actor.items.find(item => item.type == "talent") && game.settings.get(ModuleName, "ShowTalents")) {
-				buttons.push(new VaesenButtonPanelButton({type: "talent", color: 0}));
-			}
-			
-			buttons.push(new ARGON.MAIN.BUTTONS.SplitButton(new VaesenSpecialActionButton(specialActions[2]), new VaesenSpecialActionButton(specialActions[3])));
+			buttons.push(new MYZItemButton({ item: null, isWeaponSet: true, isPrimary: true }));
+			buttons.push(new ARGON.MAIN.BUTTONS.SplitButton(new MYZSpecialActionButton(specialActions[0]), new MYZSpecialActionButton(specialActions[1])));
+			buttons.push(new MYZButtonPanelButton({type: "gear", color: 0}));
+			buttons.push(new MYZButtonPanelButton({type: "talent", color: 0}));
+			buttons.push(new ARGON.MAIN.BUTTONS.SplitButton(new MYZSpecialActionButton(specialActions[2]), new MYZSpecialActionButton(specialActions[3])));
 			
 			return buttons.filter(button => button.items == undefined || button.items.length);
 		}
     }
 	
-    class VaesenFastActionPanel extends ARGON.MAIN.ActionPanel {
+    class MYZManeuverActionPanel extends ARGON.MAIN.ActionPanel {
 		constructor(...args) {
 			super(...args);
 		}
@@ -466,17 +389,17 @@ Hooks.on("argonInit", (CoreHUD) => {
 		}
 		
 		async _getButtons() {
-			const specialActions = Object.values(VaesenECHFastItems);
+			const specialActions = Object.values(MYZECHManeuverItems);
 
 			const buttons = [
-			  new ARGON.MAIN.BUTTONS.SplitButton(new VaesenSpecialActionButton(specialActions[0]), new VaesenSpecialActionButton(specialActions[1])),
-			  new ARGON.MAIN.BUTTONS.SplitButton(new VaesenSpecialActionButton(specialActions[2]), new VaesenSpecialActionButton(specialActions[3]))
+			  new ARGON.MAIN.BUTTONS.SplitButton(new MYZSpecialActionButton(specialActions[0]), new MYZSpecialActionButton(specialActions[1])),
+			  new ARGON.MAIN.BUTTONS.SplitButton(new MYZSpecialActionButton(specialActions[2]), new MYZSpecialActionButton(specialActions[3]))
 			];
 			return buttons.filter(button => button.items == undefined || button.items.length);
 		}
     }
 	
-    class VaesenReactionActionPanel extends ARGON.MAIN.ActionPanel {
+    class MYZReactionActionPanel extends ARGON.MAIN.ActionPanel {
 		constructor(...args) {
 			super(...args);
 		}
@@ -486,17 +409,17 @@ Hooks.on("argonInit", (CoreHUD) => {
 		}
 		
 		async _getButtons() {
-			const specialActions = Object.values(VaesenECHReactionItems);
+			const specialActions = Object.values(MYZECHReactionItems);
 
 			const buttons = [
-			  new ARGON.MAIN.BUTTONS.SplitButton(new VaesenSpecialActionButton(specialActions[0]), new VaesenSpecialActionButton(specialActions[1])),
-			  new ARGON.MAIN.BUTTONS.SplitButton(new VaesenSpecialActionButton(specialActions[2]), new VaesenSpecialActionButton(specialActions[3]))
+			  new ARGON.MAIN.BUTTONS.SplitButton(new MYZSpecialActionButton(specialActions[0]), new MYZSpecialActionButton(specialActions[1])),
+			  new ARGON.MAIN.BUTTONS.SplitButton(new MYZSpecialActionButton(specialActions[2]), new MYZSpecialActionButton(specialActions[3]))
 			];
 			return buttons.filter(button => button.items == undefined || button.items.length);
 		}
     }
 	
-	class VaesenItemButton extends ARGON.MAIN.BUTTONS.ItemButton {
+	class MYZItemButton extends ARGON.MAIN.BUTTONS.ItemButton {
 		constructor(...args) {
 			super(...args);
 		}
@@ -518,7 +441,8 @@ Hooks.on("argonInit", (CoreHUD) => {
 			var used = false;
 			
 			if (this.item.type == "weapon") {
-				this.actor.sheet.rollWeapon(this.item.id);
+				openItemRollDialoge(this.item, this.actor);
+				//this.actor.sheet.rollWeapon(this.item.id);
 				
 				used = true;
 			}
@@ -539,27 +463,11 @@ Hooks.on("argonInit", (CoreHUD) => {
 			}
 			
 			if (this.item.type == "gear" || this.item.type == "magic" || this.item.type == "talent") {
-				const data = this.item.data;
-				const type = data.type;
-				/*
-				const skill = this.item.system.skill;
-				
-				if (skill instanceof Array) {
-					if (skill.length == 1) {
-						skill = skill[0];
-					}
-					else {
-						skill = undefined;
-					}
-				}
-				*/
-				
-				let chatData = buildChatCard(type, data);
-				ChatMessage.create(chatData, {});;
+				this.item.sendToChat();
 			}			
 			
 			if (used) {
-				VaesenItemButton.consumeActionEconomy(this.item);
+				MYZItemButton.consumeActionEconomy(this.item);
 			}
 		}
 
@@ -579,15 +487,26 @@ Hooks.on("argonInit", (CoreHUD) => {
 		}
 	}
   
-    class VaesenButtonPanelButton extends ARGON.MAIN.BUTTONS.ButtonPanelButton {
-		constructor({type, color}) {
+    class MYZButtonPanelButton extends ARGON.MAIN.BUTTONS.ButtonPanelButton {
+		constructor({type, subtype, color}) {
 			super();
 			this.type = type;
+			this.subtype = subtype;
 			this.color = color;
 		}
 
 		get colorScheme() {
 			return this.color;
+		}
+	
+		get quantity() {
+			console.log(this.type);
+			if (this.type == "talent") {
+				console.log(this.actor.system.resource_points.value);
+				return this.actor.system.resource_points.value;
+			}
+			
+			return null;
 		}
 
 		get label() {
@@ -605,13 +524,23 @@ Hooks.on("argonInit", (CoreHUD) => {
 				case "talent": return "icons/svg/book.svg";
 			}
 		}
+		
+		async _renderInner() {
+			await super._renderInner();
+			const quantity = this.quantity;
+			if(Number.isNumeric(quantity)) {
+				this.element.classList.add("has-count");
+				this.element.dataset.itemCount = quantity;
+				this.element.style.filter = quantity === 0 ? "grayscale(1)" : null;
+			}
+		}
   
 		async _getPanel() {
-			return new ARGON.MAIN.BUTTON_PANELS.ButtonPanel({buttons: this.actor.items.filter(item => item.type == this.type).map(item => new VaesenItemButton({item}))});
+			return new ARGON.MAIN.BUTTON_PANELS.ButtonPanel({buttons: this.actor.items.filter(item => item.type == this.type).map(item => new MYZItemButton({item}))});
 		}
     }
 	
-	class VaesenSpecialActionButton extends ARGON.MAIN.BUTTONS.ActionButton {
+	class MYZSpecialActionButton extends ARGON.MAIN.BUTTONS.ActionButton {
         constructor(specialItem) {
 			super();
 			this.item = new CONFIG.Item.documentClass(specialItem, {
@@ -634,10 +563,10 @@ Hooks.on("argonInit", (CoreHUD) => {
 
 		get colorScheme() {
 			switch (this.item?.flags[ModuleName]?.actiontype) {
-				case "slow":
+				case "action":
 					return 0;
 					break;
-				case "fast":
+				case "maneuver":
 					return 1;
 					break;
 				case "react":
@@ -678,8 +607,8 @@ Hooks.on("argonInit", (CoreHUD) => {
 						this.actor.sheet.rollSkill(skill);
 					}
 					break;
-				case "vaesen" : 
-					let attribute = item.system.vaesenattribute;
+				case "MYZ" : 
+					let attribute = item.system.MYZattribute;
 					
 					if (attribute) {
 						this.actor.sheet.rollAttribute(attribute);
@@ -688,17 +617,17 @@ Hooks.on("argonInit", (CoreHUD) => {
 			}
 			
 			if (used) {
-				VaesenSpecialActionButton.consumeActionEconomy(this.item);
+				MYZSpecialActionButton.consumeActionEconomy(this.item);
 			}
 		}
 
 		static consumeActionEconomy(item) {
 			switch (item.flags[ModuleName].actiontype) {
-				case "slow":
+				case "action":
 					ui.ARGON.components.main[0].isActionUsed = true;
 					ui.ARGON.components.main[0].updateActionUse();
 					break;
-				case "fast":
+				case "maneuver":
 					if (ui.ARGON.components.main[1].isActionUsed) {
 						ui.ARGON.components.main[0].isActionUsed = true;
 						ui.ARGON.components.main[0].updateActionUse();
@@ -722,7 +651,7 @@ Hooks.on("argonInit", (CoreHUD) => {
 		}
     }
 	
-	class VaesenWeaponSets extends ARGON.WeaponSets {
+	class MYZWeaponSets extends ARGON.WeaponSets {
 		async getDefaultSets() {
 			let attacks = this.actor.items.filter((item) => item.type === "weapon");
 			
@@ -789,7 +718,7 @@ Hooks.on("argonInit", (CoreHUD) => {
 		}
 		
 		get template() {
-			return `modules/${ModuleName}/templates/VaesenWeaponSets.hbs`;
+			return `modules/${ModuleName}/templates/MYZWeaponSets.hbs`;
 		}
 		
 		async getactiveSet() {
@@ -799,22 +728,22 @@ Hooks.on("argonInit", (CoreHUD) => {
     }
   
     /*
-    class VaesenEquipmentButton extends ARGON.MAIN.BUTTONS.EquipmentButton {
+    class MYZEquipmentButton extends ARGON.MAIN.BUTTONS.EquipmentButton {
 		constructor(...args) {
 			super(...args);
 		}
     }
 	*/
   
-    CoreHUD.definePortraitPanel(VaesenPortraitPanel);
-    CoreHUD.defineDrawerPanel(VaesenDrawerPanel);
+    CoreHUD.definePortraitPanel(MYZPortraitPanel);
+    CoreHUD.defineDrawerPanel(MYZDrawerPanel);
     CoreHUD.defineMainPanels([
-		VaesenSlowActionPanel,
-		VaesenFastActionPanel,
-		VaesenReactionActionPanel,
+		MYZActionActionPanel,
+		MYZManeuverActionPanel,
+		MYZReactionActionPanel,
 		ARGON.PREFAB.PassTurnPanel
     ]);  
 	CoreHUD.defineMovementHud(null);
-    CoreHUD.defineWeaponSets(VaesenWeaponSets);
+    CoreHUD.defineWeaponSets(MYZWeaponSets);
 	CoreHUD.defineSupportedActorTypes(["human", "mutant", "npc", "robot", "vehicle", "animal", "ark"]);
 });

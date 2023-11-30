@@ -1,8 +1,8 @@
-const ModuleName = "enhancedcombathud-vaesen";
+const ModuleName = "enhancedcombathud-mutant-year-zero";
 
 async function getTooltipDetails(item, actortype) {
-	let title, description, effect, itemType, skill, vaesenattribute, category, subtitle, range, damage, bonus, bonusType;
-	let propertiesLabel;
+	let title, description, itemType, creatureType, skillmodifiers, attributemodifiers, validskills, category, subtitle, range, damage, bonus, quantity, comment, requirement;
+	let propertiesLabel = "MYZ.REQUIREMENT";
 	let properties = [];
 	let materialComponents = "";
 
@@ -12,66 +12,65 @@ async function getTooltipDetails(item, actortype) {
 
 	title = item.name;
 	description = item.system.description;
-	effect = item.system.effect
 	itemType = item.type;
-	skill = item.system.skill;
-	vaesenattribute = item.system.vaesenattribute;
+	creatureType = item.parent?.system.creatureType;
+	skillmodifiers = [];
+	attributemodifiers = [];
+	validskills = item.system.skillKeysList;
+	if (item.system.modifiers) {
+		attributemodifiers = attributemodifiers.concat(Object.keys(item.system.modifiers).filter(key => item.system.modifiers[key] != 0 && !validskills.includes(key)));
+		skillmodifiers = skillmodifiers.concat(Object.keys(item.system.modifiers).filter(key => item.system.modifiers[key] != 0 && validskills.includes(key)));
+	}
+	if (item.system.gearModifiers) {
+		attributemodifiers = attributemodifiers.concat(Object.keys(item.system.gearModifiers).filter(key => item.system.gearModifiers[key] != 0 && !attributemodifiers.includes(key) && !validskills.includes(key)));
+		skillmodifiers = skillmodifiers.concat(Object.keys(item.system.gearModifiers).filter(key => item.system.gearModifiers[key] != 0 && !skillmodifiers.includes(key) && validskills.includes(key)));
+	}
 	category = item.system.category;
 	range = item.system?.range;
 	damage = item.system?.damage;
 	bonus = item.system?.bonus;
-	bonusType = item.system?.bonusType;
-	
-	if (bonusType == "none") {
-		bonusType = undefined;
+	quantity = item.system?.quantity;
+	comment = item.system?.comment;
+	requirement = item.system?.requirement;
+	if (!requirement) {
+		requirement = item.system?.dev_requirement;
+		propertiesLabel = "MYZ.DEV_REQUIREMENT";
 	}
 	
 	properties = [];
-	materialComponents = "";
+
+	subtitle = skillmodifiers.map(key => game.i18n.localize(`MYZ.SKILL_${key}`));
+	subtitle = subtitle.concat(attributemodifiers.map(key => game.i18n.localize(`MYZ.ATTRIBUTE_${key.toUpperCase()}_${creatureType.toUpperCase()}`)));
+	subtitle = subtitle.join("/");
 
 	switch (itemType) {
-		case "base":
-			switch (actortype) {
-				case "player" :
-				case "npc" :
-					if (!(skill instanceof Array)) {
-						skill = [skill];
+		case "weapon":
+			let skill;
+			switch (category) {
+				case "melee":
+					switch(creatureType) {
+						case "robot":
+							skill = "ASSAULT";
+							break;
+						default:
+							skill = "FIGHT";
+							break;
 					}
-				
-					subtitle = skill.map(key => game.i18n.localize(CONFIG.vaesen.skills[key])).join("/");
 					break;
-				case "vaesen" : 
-					if (vaesenattribute) {
-						subtitle = game.i18n.localize("ATTRIBUTE." + vaesenattribute.toUpperCase());
-						
-						if (vaesenattribute == "bodyControl") {
-							subtitle = game.i18n.localize("ATTRIBUTE." + "BODY_CONTROL");
-						}
-					}
+				case "range":
+					skill = "SHOOT";
 					break;
 			}
-			break;
-		case "weapon":
-			subtitle = game.i18n.localize(CONFIG.vaesen.skills[skill]);
+			subtitle = game.i18n.localize(`MYZ.SKILL_${skill}`);
+			
 			details.push({
-				label: "ATTACK.DAMAGE",
+				label: "MYZ.DAMAGE",
 				value: damage
 			});
 			details.push({
-				label: "ATTACK.RANGE",
-				value: range
+				label: "MYZ.RANGE",
+				value: game.i18n.localize("MYZ." + range.toUpperCase())
 			});
-			break;
-		case "magic":
-			subtitle = game.i18n.localize("MAGIC." + category.toUpperCase());
-			break;
-		case "gear":
-		case "talent":
-			if (!(skill instanceof Array)) {
-				skill = [skill];
-			}
-		
-			subtitle = skill.map(key => game.i18n.localize(CONFIG.vaesen.skills[key])).join("/");
 			break;
 	}
 
@@ -79,42 +78,26 @@ async function getTooltipDetails(item, actortype) {
 	
 	if (bonus) {
 		details.push({
-			label: "CONDITION.BONUS",
-			value: bonus
+			label: "MYZ.BONUS",
+			value: bonus.value
 		});
 	}
 	
-	if (effect) {
-		propertiesLabel = "GEAR.EFFECT";
-		properties.push({ label: effect });
+	if (quantity != undefined && details.length < 3) {
+		details.push({
+			label: "MYZ.QUANTITY",
+			value: quantity
+		});		
 	}
 	
-	console.log(item);
-	console.log(bonusType);
-	if (bonusType) {
-		propertiesLabel = "BONUS_TYPE.HEADER";
-		
-		switch (bonusType) {
-			case "ignoreConditionSkill":
-				bonusType = "IGNORE_CONDITIONS_SKILL";
-				break;
-			case "ignoreConditionPhysical":
-				bonusType = "IGNORE_CONDITIONS_PHYSICAL"; 
-				break;
-			case "ignoreConditionMental":
-				bonusType = "IGNORE_CONDITIONS_MENTAL";
-				break;
-		}
-		
-		properties.push({ label: "BONUS_TYPE." + bonusType.toUpperCase() });
+	if (requirement) {
+		properties.push({ label: requirement });
 	}
-	
-	console.log(propertiesLabel, properties);
 
-	return { title, description, subtitle, details, properties , propertiesLabel, footerText: materialComponents };
+	return { title, description, subtitle, details, properties , propertiesLabel, footerText: comment };
 }
 
-function openRollDialoge(rollType, rollName, rollActor) { //adapted from MYZ system code
+function openRollDialoge(rollType, rollName, rollActor, rollitem = undefined) { //adapted from MYZ system code
 	let rollData = {};
 	
 	let applyedModifiersInfo;
@@ -185,6 +168,14 @@ function openRollDialoge(rollType, rollName, rollActor) { //adapted from MYZ sys
 			break;
 	}
 	
+	if (rollitem) {
+		rollData.gearDefault = Math.max(parseInt(rollitem.system.bonus.value), 0),
+		rollData.modifierDefault = rollitem.system.skillBonus,
+		rollData.artifactDefault = rollitem.system.artifactBonus || 0,
+		rollData.damage = rollitem.system.damage,
+		rollData.rollName = rollitem.name;
+	}
+	
 	game.myz.RollDialog.prepareRollDialog({...{
 		rollName: "",
 		attributeName : "",
@@ -198,8 +189,32 @@ function openRollDialoge(rollType, rollName, rollActor) { //adapted from MYZ sys
 	}, ...rollData});
 }
 
+function openItemRollDialoge(item, actor) {
+	if (item && actor) {
+		let skill;
+		
+		switch (item.system.category) {
+			case "melee":
+				switch(actor.system.creatureType) {
+					case "robot":
+						skill = "ASSAULT";
+						break;
+					default:
+						skill = "FIGHT";
+						break;
+				}
+				break;
+			case "range":
+				skill = "SHOOT";
+				break;
+		}
+		
+		openRollDialoge("skill", skill, actor, item);
+	}
+}
 
-export { getTooltipDetails, openRollDialoge }
+
+export { ModuleName, getTooltipDetails, openRollDialoge, openItemRollDialoge }
 
 /*
     _onRollAttribute(event) {
