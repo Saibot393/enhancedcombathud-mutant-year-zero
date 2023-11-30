@@ -1,0 +1,63 @@
+{
+  "id": "enhancedcombathud-mutant-year-zero",
+  "title": "Argon - Combat HUD (Mutant Year Zero)",
+  "description": "A Argon version for the Mutant Year Zero System",
+  "authors": [
+    {
+    "name": "saibot"
+    }
+  ],
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": "11",
+    "verified": "11"
+  },
+  "socket": "true",
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json",
+      "flags": {}
+    },
+    {
+      "lang": "de",
+      "name": "Deutsch",
+      "path": "lang/de.json",
+      "flags": {}
+    }
+  ],
+  "styles": [
+    "styles/MYZCustom.css"
+  ],
+  "esmodules": [
+	"scripts/settings.js",
+	"scripts/myzui.js"
+  ],
+  "relationships": {
+	"requires": [
+		{
+			"id": "enhancedcombathud",
+			"type": "module",
+			"compatibility": {}
+		}
+	],
+	"systems": [
+		{
+			"id": "mutant-year-zero",
+			"type": "system",
+			"compatibility": {}
+		}
+	]
+  },
+  "compatibility": {
+	"minimum": "11",
+	"verified": "11"
+  },
+  "url": "https://github.com/Saibot393/enhancedcombathud-mutant-year-zero",
+  "download": "https://github.com/Saibot393/enhancedcombathud-mutant-year-zero/archive/refs/tags/v1.0.0.zip",
+  "manifest": "https://github.com/Saibot393/enhancedcombathud-mutant-year-zero/releases/latest/download/module.json",
+  "readme": "https://github.com/Saibot393/enhancedcombathud-mutant-year-zero/blob/main/README.md",
+  "changelog": "https://github.com/Saibot393/enhancedcombathud-mutant-year-zero/blob/main/CHANGELOG.md",
+  "allowBugReporter": true
+}
