@@ -10,6 +10,6 @@ The following icons are included
 	- thumb-down.svg
 	- reload-gun-barrel.svg
 - By [John Colburn](https://ninmunanmu.com/)
-	-pistol-gun.svg
+	- pistol-gun.svg
 - By [Skoll](https://game-icons.net/)
 	- talk.svg
