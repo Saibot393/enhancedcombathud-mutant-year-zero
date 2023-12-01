@@ -3,9 +3,9 @@ import {ModuleName} from "./utils.js";
 Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
   //Settings
   //client
-  game.settings.register(ModuleName, "ConsumeReourcePoints", {
-	name: game.i18n.localize(ModuleName+".ConsumeReourcePoints.name"),
-	hint: game.i18n.localize(ModuleName+".ConsumeReourcePoints.descrp"),
+  game.settings.register(ModuleName, "ConsumeResourcePoints", {
+	name: game.i18n.localize(ModuleName+".Settings.ConsumeResourcePoints.name"),
+	hint: game.i18n.localize(ModuleName+".Settings.ConsumeResourcePoints.descrp"),
 	scope: "client",
 	config: true,
 	type: Boolean,
@@ -14,8 +14,8 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
   });
   
   game.settings.register(ModuleName, "ConsumeBullets", {
-	name: game.i18n.localize(ModuleName+".ConsumeBullets.name"),
-	hint: game.i18n.localize(ModuleName+".ConsumeBullets.descrp"),
+	name: game.i18n.localize(ModuleName+".Settings.ConsumeBullets.name"),
+	hint: game.i18n.localize(ModuleName+".Settings.ConsumeBullets.descrp"),
 	scope: "client",
 	config: true,
 	type: Boolean,

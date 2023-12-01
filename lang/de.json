@@ -46,7 +46,7 @@
 				"name"					: "Verbrauche Resourcen Punkte",
 				"descrp"				: "Ob Resourcen Punkte beim Einsatz von Fertigkeiten verbraucht werden sollen"				
 			},
-			"ConsumeReourcePoints" : {
+			"ConsumeBullets" : {
 				"name"					: "Verbrauche Kugeln",
 				"descrp"				: "Ob Kugeln beim Einsatz von Fernkampfwaffen verbraucht werden sollen"				
 			},

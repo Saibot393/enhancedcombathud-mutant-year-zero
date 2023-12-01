@@ -46,7 +46,7 @@
 				"name"					: "Consume resource points",
 				"descrp"				: "If resource points should be consumed on ability use"				
 			},
-			"ConsumeReourcePoints" : {
+			"ConsumeBullets" : {
 				"name"					: "Consume Bullets",
 				"descrp"				: "If bullets should be consumed when a ranged weapon is used"				
 			},
