@@ -1,8 +1,8 @@
 {
-	"enhancedcombathud-vaesen" : {
+	"enhancedcombathud-mutant-year-zero" : {
 		"Titles" : {
-			"SlowAction"				: "SLOW ACTIONS",
-			"FastAction"				: "FAST ACTIONS",
+			"ActionAction"				: "ACTIONS",
+			"ManeuverAction"			: "MANEUVERS",
 			"ReAction"					: "REACTIONS",
 			"Flee"						: "Flee",
 			"WPG"						: "Wrestle",
@@ -15,28 +15,40 @@
 			"Dodge"						: "Dodge",
 			"Parry"						: "Parry",
 			"BreakFree"					: "Break free",
-			"Chase"						: "Chase"
+			"Chase"						: "Chase",
+			"Help"						: "Help",
+			"Hinder"					: "Hinder",
+			"Reload"					: "Reload",
+			"Defend"					: "Defend"
 		},
 		
 		"Descriptions" : {
-			"Flee"						: "See Vaesen core rules book p.62",
-			"WPG"						: "See Vaesen core rules book p.62",
-			"Survey"					: "See Vaesen core rules book p.62",
-			"TreatInjuries"				: "See Vaesen core rules book p.71",
-			"DrawWeapon"				: "See Vaesen core rules book p.60",
-			"Standup"					: "See Vaesen core rules book p.60",
-			"Move"						: "See Vaesen core rules book p.60",
-			"TakeCover"					: "See Vaesen core rules book p.73",
-			"Dodge"						: "See Vaesen core rules book p.61",
-			"Parry"						: "See Vaesen core rules book p.61",
-			"BreakFree"					: "See Vaesen core rules book p.62",
-			"Chase"						: "See Vaesen core rules book p.62"
+			"Flee"						: "See Mutant Year Zero core rules book p.??",
+			"WPG"						: "See Mutant Year Zero core rules book p.??",
+			"Survey"					: "See Mutant Year Zero core rules book p.??",
+			"TreatInjuries"				: "See Mutant Year Zero core rules book p.??",
+			"DrawWeapon"				: "See Mutant Year Zero core rules book p.??",
+			"Standup"					: "See Mutant Year Zero core rules book p.??",
+			"Move"						: "See Mutant Year Zero core rules book p.??",
+			"TakeCover"					: "See Mutant Year Zero core rules book p.??",
+			"Dodge"						: "See Mutant Year Zero core rules book p.??",
+			"Parry"						: "See Mutant Year Zero core rules book p.??",
+			"BreakFree"					: "See Mutant Year Zero core rules book p.??",
+			"Chase"						: "See Mutant Year Zero core rules book p.??",
+			"Help"						: "See Mutant Year Zero core rules book p.??",
+			"Hinder"					: "See Mutant Year Zero core rules book p.??",
+			"Reload"					: "See Mutant Year Zero core rules book p.??",
+			"Defend"					: "See Mutant Year Zero core rules book p.??"
 		},
 		
 		"Settings" : {
-			"TreatType" : {
-				"name"					: "Treat injuries type",
-				"descrp"				: "Which type of injuries treatment should be rolled when the action button is clicked"
+			"ConsumeReourcePoints" : {
+				"name"					: "Consume resource points",
+				"descrp"				: "If resource points should be consumed on ability use"				
+			},
+			"ConsumeReourcePoints" : {
+				"name"					: "Consume Bullets",
+				"descrp"				: "If bullets should be consumed when a ranged weapon is used"				
 			},
 			"ShowTalents" : {
 				"name"					: "Show talents button",
@@ -49,8 +61,8 @@
 		}
 	},
 	
-    "enhancedcombathud.themeOptions.mainAction" : "Slow Action Colors",
-    "enhancedcombathud.themeOptions.bonusAction" : "Fast Action Colors",
-    "enhancedcombathud.themeOptions.freeAction" : "Not used by Argon Vaesen",
+    "enhancedcombathud.themeOptions.mainAction" : "Action Colors",
+    "enhancedcombathud.themeOptions.bonusAction" : "Maneuver Colors",
+    "enhancedcombathud.themeOptions.freeAction" : "Not used by Argon MYZ",
     "enhancedcombathud.themeOptions.reaction" : "Reaction Colors"
 }

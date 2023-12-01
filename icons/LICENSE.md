@@ -4,5 +4,11 @@ The following icons are included
 	- dna1.svg
 	- microchip.svg
 	-paw.svg
-- talk.svg by [Skoll] (https://game-icons.net/)
-- 
+- By [Delapouite](https://delapouite.com/)
+	- thumb-up.svg
+	- thumb-down.svg
+	- reload-gun-barrel.svg
+- By [John Colburn](https://ninmunanmu.com/)
+	-pistol-gun.svg
+- By [Skoll] (https://game-icons.net/)
+	- talk.svg

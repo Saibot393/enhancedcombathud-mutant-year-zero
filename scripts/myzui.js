@@ -307,7 +307,7 @@ Hooks.on("argonInit", (CoreHUD) => {
 						gridCols: "7fr 2fr 2fr",
 						captions: [
 							{
-								label: game.i18n.localize("HEADER.ATTRIBUTES"),
+								label: game.i18n.localize("MYZ.ATTRIBUTES"),
 							},
 							{
 								label: "", //looks nicer
@@ -324,7 +324,7 @@ Hooks.on("argonInit", (CoreHUD) => {
 						gridCols: "7fr 2fr",
 						captions: [
 							{
-								label: game.i18n.localize("HEADER.ATTRIBUTES"),
+								label: game.i18n.localize("MYZ.ATTRIBUTES"),
 							},
 							{
 								label: game.i18n.localize("ROLL.ROLL"),
@@ -340,7 +340,7 @@ Hooks.on("argonInit", (CoreHUD) => {
 					gridCols: "7fr 2fr",
 					captions: [
 						{
-							label: game.i18n.localize("HEADER.SKILLS"),
+							label: game.i18n.localize("MYZ.SKILLS"),
 						},
 						{
 							label: "",
@@ -354,7 +354,7 @@ Hooks.on("argonInit", (CoreHUD) => {
 		}
 
 		get title() {
-			return `${game.i18n.localize("HEADER.ATTRIBUTES")} & ${game.i18n.localize("HEADER.SKILLS")}`;
+			return `${game.i18n.localize("MYZ.ATTRIBUTES")} & ${game.i18n.localize("MYZ.SKILLS")}`;
 		}
 	}
   
@@ -364,7 +364,7 @@ Hooks.on("argonInit", (CoreHUD) => {
 		}
 
 		get label() {
-			return ModuleName+".Titles.SlowAction";
+			return ModuleName+".Titles.ActionAction";
 		}
 		
 		get maxActions() {
@@ -387,9 +387,7 @@ Hooks.on("argonInit", (CoreHUD) => {
 			
 			buttons.push(new MYZItemButton({ item: null, isWeaponSet: true, isPrimary: true }));
 			buttons.push(new ARGON.MAIN.BUTTONS.SplitButton(new MYZSpecialActionButton(specialActions[0]), new MYZSpecialActionButton(specialActions[1])));
-			buttons.push(new MYZButtonPanelButton({type: "gear", color: 0}));
 			buttons.push(new MYZButtonPanelButton({type: "ability", color: 0}));
-			buttons.push(new ARGON.MAIN.BUTTONS.SplitButton(new MYZSpecialActionButton(specialActions[2]), new MYZSpecialActionButton(specialActions[3])));
 			
 			return buttons.filter(button => button.items == undefined || button.items.length);
 		}
@@ -401,7 +399,7 @@ Hooks.on("argonInit", (CoreHUD) => {
 		}
 
 		get label() {
-			return ModuleName+".Titles.FastAction";
+			return ModuleName+".Titles.ManeuverAction";
 		}
 		
 		get maxActions() {
@@ -421,9 +419,14 @@ Hooks.on("argonInit", (CoreHUD) => {
 			const specialActions = Object.values(MYZECHManeuverItems);
 
 			const buttons = [
-			  new ARGON.MAIN.BUTTONS.SplitButton(new MYZSpecialActionButton(specialActions[0]), new MYZSpecialActionButton(specialActions[1])),
-			  new ARGON.MAIN.BUTTONS.SplitButton(new MYZSpecialActionButton(specialActions[2]), new MYZSpecialActionButton(specialActions[3]))
+				new ARGON.MAIN.BUTTONS.SplitButton(new MYZSpecialActionButton(specialActions[0]), new MYZSpecialActionButton(specialActions[1])),
+				new MYZButtonPanelButton({type: "gear", color: 1})
 			];
+			if (game.settings.get(ModuleName, "ShowTalents")) {
+				buttons.push(new MYZButtonPanelButton({type: "talent", color: 1}));
+			}
+			buttons.push(new ARGON.MAIN.BUTTONS.SplitButton(new MYZSpecialActionButton(specialActions[2]), new MYZSpecialActionButton(specialActions[3])));
+			
 			return buttons.filter(button => button.items == undefined || button.items.length);
 		}
     }
@@ -441,8 +444,7 @@ Hooks.on("argonInit", (CoreHUD) => {
 			const specialActions = Object.values(MYZECHReactionItems);
 
 			const buttons = [
-			  new ARGON.MAIN.BUTTONS.SplitButton(new MYZSpecialActionButton(specialActions[0]), new MYZSpecialActionButton(specialActions[1])),
-			  new ARGON.MAIN.BUTTONS.SplitButton(new MYZSpecialActionButton(specialActions[2]), new MYZSpecialActionButton(specialActions[3]))
+				new MYZSpecialActionButton(specialActions[0])
 			];
 			return buttons.filter(button => button.items == undefined || button.items.length);
 		}
@@ -510,9 +512,15 @@ Hooks.on("argonInit", (CoreHUD) => {
 				}
 			}
 			
-			if (this.item.type == "gear" || this.item.type == "magic" || this.item.type == "talent") {
+			if (this.item.type == "gear") {
 				this.item.sendToChat();
+				
+				used = true;
 			}		
+			
+			if (this.item.type == "talent") {
+				this.item.sendToChat();
+			}
 
 			if (this.item.type == "ability") {
 				if (game.settings.get(ModuleName, "ConsumeReourcePoints")) {
@@ -543,6 +551,10 @@ Hooks.on("argonInit", (CoreHUD) => {
 			
 			if (item.type == "weapon") {
 				consumeAction("action");
+			}
+			
+			if (item.type == "gear") {
+				consumeAction("maneuver");
 			}
 			
 			if (item.type == "ability") {
@@ -600,12 +612,11 @@ Hooks.on("argonInit", (CoreHUD) => {
 		}
 
 		get label() {
-			switch (this.type) {
-				case "gear": return "GEAR.NAME";
-				case "magic": return "MAGIC.NAME";
-				case "talent": return "TALENT.NAME";
-				case "ability": return "Ability.NAME";
+			if (this.type == "ability") {
+				return "MYZ.ABILITY_" + this.actor.system.creatureType.toUpperCase();
 			}
+			
+			return "TYPES.Item." + this.type;
 		}
 
 		get icon() {

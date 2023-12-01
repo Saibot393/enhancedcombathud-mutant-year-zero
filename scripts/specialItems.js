@@ -13,44 +13,20 @@ function registerMYZECHSItems () {
 		groupflags : {
 			actiontype : "action"
 		},
-		Flee : {
-			img: "modules/enhancedcombathud/icons/svg/run.svg",
-			name: game.i18n.localize(ModuleName+".Titles.Flee"),
+		Help : {
+			img: "modules/enhancedcombathud-mutant-year-zero/icons/thumb-up.svg",
+			name: game.i18n.localize(ModuleName+".Titles.Help"),
 			type : "base",
 			system : {
-				description : game.i18n.localize(ModuleName+".Descriptions.Flee"),
-				skill : "agility",
-				MYZattribute : "bodyControl"
+				description : game.i18n.localize(ModuleName+".Descriptions.Help")
 			}
 		},
-		WPG : {
-			img: "modules/enhancedcombathud/icons/svg/shield-bash.svg",
-			name: game.i18n.localize(ModuleName+".Titles.WPG"),
+		Hinder : {
+			img: "modules/enhancedcombathud-mutant-year-zero/icons/thumb-down.svg",
+			name: game.i18n.localize(ModuleName+".Titles.Hinder"),
 			type : "base",
 			system : {
-				description : game.i18n.localize(ModuleName+".Descriptions.WPG"),
-				skill : "force",
-				MYZattribute : "might"
-			}
-		},
-		Survey : {
-			img: "icons/svg/eye.svg",
-			name: game.i18n.localize(ModuleName+".Titles.Survey"),
-			type : "base",
-			system : {
-				description : game.i18n.localize(ModuleName+".Descriptions.Survey"),
-				skill : "observation",
-				MYZattribute : "bodyControl"
-			}
-		},
-		TreatInjuries : {
-			img: "icons/svg/heal.svg",
-			name: game.i18n.localize(ModuleName+".Titles.TreatInjuries"),
-			type : "base",
-			system : {
-				description : game.i18n.localize(ModuleName+".Descriptions.TreatInjuries"),
-				skill : "",
-				MYZattribute : "bodyControl"
+				description : game.i18n.localize(ModuleName+".Descriptions.Hinder")
 			}
 		}
 	}
@@ -58,22 +34,6 @@ function registerMYZECHSItems () {
 	MYZECHManeuverItems = {
 		groupflags : {
 			actiontype : "maneuver"
-		},
-		DrawWeapon : {
-			img: "icons/svg/sword.svg",
-			name: game.i18n.localize(ModuleName+".Titles.DrawWeapon"),
-			type : "base",
-			system : {
-				description : game.i18n.localize(ModuleName+".Descriptions.DrawWeapon")
-			}
-		},
-		Standup : {
-			img: "icons/svg/up.svg",
-			name: game.i18n.localize(ModuleName+".Titles.Standup"),
-			type : "base",
-			system : {
-				description : game.i18n.localize(ModuleName+".Descriptions.Standup")
-			}
 		},
 		Move : {
 			img: "modules/enhancedcombathud/icons/svg/journey.svg",
@@ -90,6 +50,22 @@ function registerMYZECHSItems () {
 			system : {
 				description : game.i18n.localize(ModuleName+".Descriptions.TakeCover")
 			}
+		},
+		DrawWeapon : {
+			img: "modules/enhancedcombathud-mutant-year-zero/icons/pistol-gun.svg",
+			name: game.i18n.localize(ModuleName+".Titles.DrawWeapon"),
+			type : "base",
+			system : {
+				description : game.i18n.localize(ModuleName+".Descriptions.DrawWeapon")
+			}
+		},
+		Reload : {
+			img: "modules/enhancedcombathud-mutant-year-zero/icons/reload-gun-barrel.svg",
+			name: game.i18n.localize(ModuleName+".Titles.Reload"),
+			type : "base",
+			system : {
+				description : game.i18n.localize(ModuleName+".Descriptions.Reload")
+			}
 		}
 	}
 	
@@ -97,44 +73,12 @@ function registerMYZECHSItems () {
 		groupflags : {
 			actiontype : "react"
 		},
-		Dodge : {
-			img: "modules/enhancedcombathud/icons/svg/dodging.svg",
-			name: game.i18n.localize(ModuleName+".Titles.Dodge"),
+		Defend : {
+			img: "icons/svg/shield.svg",
+			name: game.i18n.localize(ModuleName+".Titles.Defend"),
 			type : "base",
 			system : {
-				description : game.i18n.localize(ModuleName+".Descriptions.Dodge"),
-				skill : "agility",
-				MYZattribute : "bodyControl"
-			}
-		},
-		Parry : {
-			img: "modules/enhancedcombathud/icons/svg/crossed-swords.svg",
-			name: game.i18n.localize(ModuleName+".Titles.Parry"),
-			type : "base",
-			system : {
-				description : game.i18n.localize(ModuleName+".Descriptions.Parry"),
-				skill : ["closeCombat", "force"],
-				MYZattribute : "might"
-			}
-		},
-		BreakFree : {
-			img: "modules/enhancedcombathud/icons/svg/mighty-force.svg",
-			name: game.i18n.localize(ModuleName+".Titles.BreakFree"),
-			type : "base",
-			system : {
-				description : game.i18n.localize(ModuleName+".Descriptions.BreakFree"),
-				skill : "force",
-				MYZattribute : "might"
-			}
-		},
-		Chase : {
-			img: "modules/enhancedcombathud/icons/svg/walking-boot.svg",
-			name: game.i18n.localize(ModuleName+".Titles.Chase"),
-			type : "base",
-			system : {
-				description : game.i18n.localize(ModuleName+".Descriptions.Chase"),
-				skill : "agility",
-				MYZattribute : "bodyControl"
+				description : game.i18n.localize(ModuleName+".Descriptions.Defend")
 			}
 		}
 	}
