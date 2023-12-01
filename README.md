@@ -23,6 +23,8 @@ Due to licensing i am not able to include official text from the book for the de
 - "draw weapon":`DrawWeapon`
 - "reload":`Reload`
 - "DEFEND":`Defend`
+  
+**You need to reload the game to apply the changes to the descriptions!**
 
 Due to the way movement works in Mutant Year Zero the Movement Tracker is not (yet?) available to in this implementation.
 
