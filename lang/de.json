@@ -42,7 +42,7 @@
 		},
 		
 		"Settings" : {
-			"ConsumeReourcePoints" : {
+			"ConsumeResourcePoints" : {
 				"name"					: "Verbrauche Resourcen Punkte",
 				"descrp"				: "Ob Resourcen Punkte beim Einsatz von Fertigkeiten verbraucht werden sollen"				
 			},

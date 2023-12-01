@@ -42,7 +42,7 @@
 		},
 		
 		"Settings" : {
-			"ConsumeReourcePoints" : {
+			"ConsumeResourcePoints" : {
 				"name"					: "Consume resource points",
 				"descrp"				: "If resource points should be consumed on ability use"				
 			},
