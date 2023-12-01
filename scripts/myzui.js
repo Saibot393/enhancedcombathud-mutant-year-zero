@@ -40,7 +40,7 @@ Hooks.on("argonInit", (CoreHUD) => {
 		}
 
 		get isDead() {
-			return Object.values(this.actor.system.attributes).find(attribute => attribute.value <= 0);
+			return Object.values(this.actor.system.attributes).find(attribute => attribute.value <= 0 && attribute.max > 0);
 		}
 
 		async getStatBlocks() {
@@ -188,25 +188,22 @@ Hooks.on("argonInit", (CoreHUD) => {
 
 		get categories() {
 			const attributes = {...this.actor.system.attributes};
-			const skills = this.actor.items.filter(item => item.type == "skill");
+			let skills = this.actor.items.filter(item => item.type == "skill");
 			
-			/*
-			var allowedattributes = [];
+			//sort the skills (why are they not sorted alread?)
+			let skillgroups = {};
 			
-			switch (this.actor.system.creatureType) {
-				case "player":
-					allowedattributes = Object.keys(attributes).filter(key => key != "magic");
-					break;
-				default:
-					allowedattributes = Object.keys(attributes);
-					break;
+			for (let attribute of Object.keys(attributes)) {
+				skillgroups[attribute] = skills.filter(skill => skill.system.attribute == attribute);
+				
+				skillgroups[attribute] = skillgroups[attribute].sort((a,b) => {
+					if (a.name < b.name) {return -1}
+					if (a.name > b.name) {return 1}
+					return 0
+				});
 			}
-			
-			for (let key of Object.keys(attributes)) {
-				if (!allowedattributes.includes(key)) {
-					delete attributes[key];
-				}
-			}*/
+			skills = [];
+			Object.values(skillgroups).forEach(group => skills = skills.concat(group));
 			
 			let maxAttribute = Math.max(...Object.values(attributes).map(content => content.value));
 
@@ -320,7 +317,7 @@ Hooks.on("argonInit", (CoreHUD) => {
 								label: game.i18n.localize("MYZ.ATTRIBUTES"),
 							},
 							{
-								label: game.i18n.localize("ROLL.ROLL"),
+								label: game.i18n.localize("MYZ.ROLL"),
 							},
 						],
 						buttons: attributesButtons
@@ -516,7 +513,7 @@ Hooks.on("argonInit", (CoreHUD) => {
 			}
 
 			if (this.item.type == "ability") {
-				if (game.settings.get(ModuleName, "ConsumeReourcePoints")) {
+				if (game.settings.get(ModuleName, "ConsumeResourcePoints")) {
 					const newvalue = this.actor.system.resource_points.value - 1;
 					
 					if (newvalue >= 0) {
@@ -552,15 +549,6 @@ Hooks.on("argonInit", (CoreHUD) => {
 			
 			if (item.type == "ability") {
 				consumeAction(this.abilityactiontype(item));
-			}
-		}
-
-		async render(...args) {
-			await super.render(...args);
-			
-			const quantity = this.quantity;
-			if(!Number.isNumeric(quantity)) {
-				this.element.classList.remove("has-count");
 			}
 		}
 		
@@ -627,16 +615,21 @@ Hooks.on("argonInit", (CoreHUD) => {
 			}
 		}
 		
-		async _renderInner() {
-			await super._renderInner();
+		async getData() {
+			const prevData = super.getData();
+			
 			const quantity = this.quantity;
-			if(Number.isNumeric(quantity)) {
-				this.element.classList.add("has-count");
-				this.element.dataset.itemCount = quantity;
-				this.element.style.filter = quantity === 0 ? "grayscale(1)" : null;
+			return {
+				...prevData,
+				quantity: quantity,
+				hasQuantity: Number.isNumeric(quantity)
 			}
 		}
-  
+		
+		get template() {
+			return `modules/${ModuleName}/templates/MYZButtonPanelButton.hbs`;
+		}
+		
 		async _getPanel() {
 			return new ARGON.MAIN.BUTTON_PANELS.ButtonPanel({buttons: this.actor.items.filter(item => item.type == this.type).map(item => new MYZItemButton({item}))});
 		}
