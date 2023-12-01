@@ -11,5 +11,5 @@ The following icons are included
 	- reload-gun-barrel.svg
 - By [John Colburn](https://ninmunanmu.com/)
 	-pistol-gun.svg
-- By [Skoll] (https://game-icons.net/)
+- By [Skoll](https://game-icons.net/)
 	- talk.svg
