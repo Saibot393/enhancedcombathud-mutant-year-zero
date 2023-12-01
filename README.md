@@ -5,7 +5,7 @@ An implementation of the [Argon - Combat HUD](https://foundryvtt.com/packages/en
 
 ### The documentation for the core argon features can be found [here](https://api.theripper93.com/modulewiki/enhancedcombathud/free)
 
-This module adjust various Argon features for the Mutant Year Zero system:
+This module adjusts various Argon features for the Mutant Year Zero system:
 - **Portrait**
     - While the current strength is alway displayed, the current values of the other three attributes is only displayed if they are below the maximum
     - The rot will be displayed on the profile (the permanent rot has a border)
