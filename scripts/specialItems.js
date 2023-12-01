@@ -55,15 +55,6 @@ function registerMYZECHSItems () {
 		}
 	}
 	
-	switch(game.settings.get(ModuleName, "TreatType")) {
-		case "physical" :
-			MYZECHActionItems.TreatInjuries.system.skill = "medicine";
-			break;
-		case "mental" :
-			MYZECHActionItems.TreatInjuries.system.skill = "inspiration";
-			break;
-	}
-	
 	MYZECHManeuverItems = {
 		groupflags : {
 			actiontype : "maneuver"

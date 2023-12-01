@@ -3,17 +3,23 @@ import {ModuleName} from "./utils.js";
 Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
   //Settings
   //client
-  game.settings.register(ModuleName, "TreatType", {
-	name: game.i18n.localize("enhancedcombathud-vaesen.Settings.TreatType.name"),
-	hint: game.i18n.localize("enhancedcombathud-vaesen.Settings.TreatType.descrp"),
+  game.settings.register(ModuleName, "ConsumeReourcePoints", {
+	name: game.i18n.localize("enhancedcombathud-vaesen.ConsumeReourcePoints.name"),
+	hint: game.i18n.localize("enhancedcombathud-vaesen.ConsumeReourcePoints.descrp"),
 	scope: "client",
 	config: true,
-	type: String,
-	choices: {
-		"physical" : game.i18n.localize("CONDITION.PHYSICAL"),
-		"mental" : game.i18n.localize("CONDITION.MENTAL")
-	},
-	default: "physical",
+	type: Boolean,
+	default: false,
+	requiresReload: true
+  });
+  
+  game.settings.register(ModuleName, "ConsumeBullets", {
+	name: game.i18n.localize("enhancedcombathud-vaesen.ConsumeBullets.name"),
+	hint: game.i18n.localize("enhancedcombathud-vaesen.ConsumeBullets.descrp"),
+	scope: "client",
+	config: true,
+	type: Boolean,
+	default: false,
 	requiresReload: true
   });
   

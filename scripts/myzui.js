@@ -6,6 +6,35 @@ Hooks.on("argonInit", (CoreHUD) => {
   
 	registerMYZECHSItems();
   
+	function consumeAction(type) {
+		switch (type) {
+			case "action":
+				ui.ARGON.components.main[0].isActionUsed = true;
+				ui.ARGON.components.main[0].updateActionUse();
+				break;
+			case "maneuver":
+				if (ui.ARGON.components.main[1].isActionUsed) {
+					ui.ARGON.components.main[0].isActionUsed = true;
+					ui.ARGON.components.main[0].updateActionUse();
+				}
+				else {
+					ui.ARGON.components.main[1].isActionUsed = true;
+					ui.ARGON.components.main[1].updateActionUse()
+				}
+				break;
+			case "react":
+				if (ui.ARGON.components.main[1].isActionUsed) {
+					ui.ARGON.components.main[0].isActionUsed = true;
+					ui.ARGON.components.main[0].updateActionUse()
+				}
+				else {
+					ui.ARGON.components.main[1].isActionUsed = true;
+					ui.ARGON.components.main[1].updateActionUse()
+				}
+				break;
+		}
+	}
+  
     class MYZPortraitPanel extends ARGON.PORTRAIT.PortraitPanel {
 		constructor(...args) {
 			super(...args);
@@ -67,7 +96,7 @@ Hooks.on("argonInit", (CoreHUD) => {
 					
 					Blocks[position].unshift([
 						{
-							text: game.i18n.localize(`MYZ.ATTRIBUTE_${key.toUpperCase()}_${this.actor.type.toUpperCase()}`).toUpperCase().slice(0,3),
+							text: game.i18n.localize(`MYZ.ATTRIBUTE_${key.toUpperCase()}_${this.actor.system.creatureType.toUpperCase()}`).toUpperCase().slice(0,3),
 						},
 						{
 							text: attributes[key].value,
@@ -171,7 +200,7 @@ Hooks.on("argonInit", (CoreHUD) => {
 			/*
 			var allowedattributes = [];
 			
-			switch (this.actor.type) {
+			switch (this.actor.system.creatureType) {
 				case "player":
 					allowedattributes = Object.keys(attributes).filter(key => key != "magic");
 					break;
@@ -211,7 +240,7 @@ Hooks.on("argonInit", (CoreHUD) => {
 				
 				return new ARGON.DRAWER.DrawerButton([
 					{
-						label: game.i18n.localize(attributes[attribute].label + "_" + this.actor.type.toUpperCase()),
+						label: game.i18n.localize(attributes[attribute].label + "_" + this.actor.system.creatureType.toUpperCase()),
 						onClick: () => {openRollDialoge("attribute", attribute, this.actor)}
 					},
 					{
@@ -245,7 +274,7 @@ Hooks.on("argonInit", (CoreHUD) => {
 						valueLabel = valueLabel + `<div style="display:flex">`;
 						
 						for (let i = 0; i < maxAttribute; i++) {
-							if (i < attributes[skills[skill].attribute].value) {
+							if (i < attributes[skillData.attribute].value) {
 								valueLabel = valueLabel + `<i class="fa-regular fa-circle"></i>`;
 							}
 							else {
@@ -359,7 +388,7 @@ Hooks.on("argonInit", (CoreHUD) => {
 			buttons.push(new MYZItemButton({ item: null, isWeaponSet: true, isPrimary: true }));
 			buttons.push(new ARGON.MAIN.BUTTONS.SplitButton(new MYZSpecialActionButton(specialActions[0]), new MYZSpecialActionButton(specialActions[1])));
 			buttons.push(new MYZButtonPanelButton({type: "gear", color: 0}));
-			buttons.push(new MYZButtonPanelButton({type: "talent", color: 0}));
+			buttons.push(new MYZButtonPanelButton({type: "ability", color: 0}));
 			buttons.push(new ARGON.MAIN.BUTTONS.SplitButton(new MYZSpecialActionButton(specialActions[2]), new MYZSpecialActionButton(specialActions[3])));
 			
 			return buttons.filter(button => button.items == undefined || button.items.length);
@@ -422,6 +451,16 @@ Hooks.on("argonInit", (CoreHUD) => {
 	class MYZItemButton extends ARGON.MAIN.BUTTONS.ItemButton {
 		constructor(...args) {
 			super(...args);
+			
+			if (this.item?.type == "weapon") {
+				Hooks.on("updateActor", (actor, changes, infos, sender) => {
+					if (this.quantity != null) {
+						if (this.actor == actor) {
+							this.render();
+						}
+					}
+				});
+			}
 		}
 
 		get hasTooltip() {
@@ -433,38 +472,66 @@ Hooks.on("argonInit", (CoreHUD) => {
 		}
 
 		async getTooltipData() {
-			const tooltipData = await getTooltipDetails(this.item, this.actor.type);
+			const tooltipData = await getTooltipDetails(this.item, this.actor.system.creatureType);
 			return tooltipData;
 		}
 
+		get quantity() {
+			if (game.settings.get(ModuleName, "ConsumeBullets")) {
+				if (this.item?.type == "weapon") {
+					if (this.item.system.category == "ranged") {
+						return this.actor.system.resources.bullets.value;
+					}
+				}
+			}
+			
+			return null;
+		}
+		
 		async _onLeftClick(event) {
 			var used = false;
 			
 			if (this.item.type == "weapon") {
-				openItemRollDialoge(this.item, this.actor);
-				//this.actor.sheet.rollWeapon(this.item.id);
+				if (game.settings.get(ModuleName, "ConsumeBullets") && this.quantity) {
+					const newvalue = this.actor.system.resources.bullets.value - 1;
+					
+					if (newvalue >= 0) {
+						this.actor.update({system : {resources : {bullets : {value : newvalue}}}});
+						
+						used = true;
+					}
+				}
+				else {
+					used = true;
+				}
 				
-				used = true;
-			}
-			
-			if (this.item.type == "attack") {
-				const testName = this.item.name;
-				let bonus = this.actor.sheet.computeInfoFromConditions();
-				let attribute = this.actor.system.attribute[this.item.system.attribute];
-
-				let info = [
-				  { name: game.i18n.localize(attribute.label + "_ROLL"), value: attribute.value },
-				  bonus
-				];
-
-				prepareRollNewDialog(this.actor.sheet, testName, info, this.item.system.damage, null, null);
-				
-				used = true;
+				if (used) {
+					openItemRollDialoge(this.item, this.actor);
+				}
 			}
 			
 			if (this.item.type == "gear" || this.item.type == "magic" || this.item.type == "talent") {
 				this.item.sendToChat();
-			}			
+			}		
+
+			if (this.item.type == "ability") {
+				if (game.settings.get(ModuleName, "ConsumeReourcePoints")) {
+					const newvalue = this.actor.system.resource_points.value - 1;
+					
+					if (newvalue >= 0) {
+						this.actor.update({system : {resource_points : {value : newvalue}}});
+						
+						used = true;
+					}
+				}
+				else {
+					used = true;
+				}
+				
+				if (used) {
+					this.item.sendToChat();
+				}
+			}
 			
 			if (used) {
 				MYZItemButton.consumeActionEconomy(this.item);
@@ -472,18 +539,36 @@ Hooks.on("argonInit", (CoreHUD) => {
 		}
 
 		static consumeActionEconomy(item) {
-			if (item.type == "weapon" || item.type == "attack") {
-				ui.ARGON.components.main[0].isActionUsed = true;
-				ui.ARGON.components.main[0].updateActionUse();
+			let consumeID = undefined;
+			
+			if (item.type == "weapon") {
+				consumeAction("action");
+			}
+			
+			if (item.type == "ability") {
+				consumeAction(this.abilityactiontype(item));
 			}
 		}
 
 		async render(...args) {
 			await super.render(...args);
-			if (this.item?.system.consumableType === "ammo") {
-				const weapons = this.actor.items.filter((item) => item.system.consume?.target === this.item.id);
-				ui.ARGON.updateItemButtons(weapons);
+			
+			const quantity = this.quantity;
+			if(!Number.isNumeric(quantity)) {
+				this.element.classList.remove("has-count");
 			}
+		}
+		
+		static abilityactiontype(item) {
+			if (item.system.description.includes("(R)")) {
+				return "react";
+			}
+			
+			if (item.system.description.includes("(E)")) {
+				return "";
+			}
+			
+			return "action";
 		}
 	}
   
@@ -491,8 +576,15 @@ Hooks.on("argonInit", (CoreHUD) => {
 		constructor({type, subtype, color}) {
 			super();
 			this.type = type;
-			this.subtype = subtype;
 			this.color = color;
+			
+			Hooks.on("updateActor", (actor, changes, infos, sender) => {
+				if (this.quantity != null) {
+					if (this.actor == actor) {
+						this.render();
+					}
+				}
+			});
 		}
 
 		get colorScheme() {
@@ -500,9 +592,7 @@ Hooks.on("argonInit", (CoreHUD) => {
 		}
 	
 		get quantity() {
-			console.log(this.type);
-			if (this.type == "talent") {
-				console.log(this.actor.system.resource_points.value);
+			if (this.type == "ability") {
 				return this.actor.system.resource_points.value;
 			}
 			
@@ -514,6 +604,7 @@ Hooks.on("argonInit", (CoreHUD) => {
 				case "gear": return "GEAR.NAME";
 				case "magic": return "MAGIC.NAME";
 				case "talent": return "TALENT.NAME";
+				case "ability": return "Ability.NAME";
 			}
 		}
 
@@ -522,6 +613,13 @@ Hooks.on("argonInit", (CoreHUD) => {
 				case "gear": return "modules/enhancedcombathud/icons/svg/backpack.svg";
 				case "magic": return "modules/enhancedcombathud/icons/svg/spell-book.svg";
 				case "talent": return "icons/svg/book.svg";
+				case "ability":
+					switch(this.actor.system.creatureType) {
+						case "human": return "modules/enhancedcombathud-mutant-year-zero/icons/talk.svg";
+						case "mutant": return "modules/enhancedcombathud-mutant-year-zero/icons/dna1.svg";
+						case "animal": return "modules/enhancedcombathud-mutant-year-zero/icons/paw.svg";
+						case "robot": return "modules/enhancedcombathud-mutant-year-zero/icons/microchip.svg";
+					}
 			}
 		}
 		
@@ -577,7 +675,7 @@ Hooks.on("argonInit", (CoreHUD) => {
 		}
 
 		async getTooltipData() {
-			const tooltipData = await getTooltipDetails(this.item, this.actor.type);
+			const tooltipData = await getTooltipDetails(this.item, this.actor.system.creatureType);
 			return tooltipData;
 		}
 
@@ -586,7 +684,7 @@ Hooks.on("argonInit", (CoreHUD) => {
 			
 			const item = this.item;
 			
-			switch(this.actor.type) {
+			switch(this.actor.system.creatureType) {
 				case "player" :
 				case "npc" :
 					let skill = item.system.skill;
@@ -622,36 +720,39 @@ Hooks.on("argonInit", (CoreHUD) => {
 		}
 
 		static consumeActionEconomy(item) {
-			switch (item.flags[ModuleName].actiontype) {
-				case "action":
-					ui.ARGON.components.main[0].isActionUsed = true;
-					ui.ARGON.components.main[0].updateActionUse();
-					break;
-				case "maneuver":
-					if (ui.ARGON.components.main[1].isActionUsed) {
-						ui.ARGON.components.main[0].isActionUsed = true;
-						ui.ARGON.components.main[0].updateActionUse();
-					}
-					else {
-						ui.ARGON.components.main[1].isActionUsed = true;
-						ui.ARGON.components.main[1].updateActionUse()
-					}
-					break;
-				case "react":
-					if (ui.ARGON.components.main[1].isActionUsed) {
-						ui.ARGON.components.main[0].isActionUsed = true;
-						ui.ARGON.components.main[0].updateActionUse()
-					}
-					else {
-						ui.ARGON.components.main[1].isActionUsed = true;
-						ui.ARGON.components.main[1].updateActionUse()
-					}
-					break;
-			}
+			consumeAction(item.flags[ModuleName].actiontype);
 		}
     }
 	
 	class MYZWeaponSets extends ARGON.WeaponSets {
+		constructor(...args) {
+			super(...args);
+			
+			this.lastdragID = "";
+			
+			Hooks.on("renderActorSheet", (sheet, html, infos) => {
+				if (sheet.actor == this.actor) {
+					const weaponelements = html.find(`li .roll-weapon`);
+					
+					weaponelements.each((i, element) => {
+						element.draggable = true;
+						
+						let id = element.getAttribute("data-item-id");
+						
+						element.ondragstart = () => {
+							this.lastdragID = id;
+						};
+						
+						element.ondragend = () => {
+							if (this.lastdragID == id) {
+								this.lastdragID = "";
+							}
+						};
+					})
+				}
+			});
+		}
+		
 		async getDefaultSets() {
 			let attacks = this.actor.items.filter((item) => item.type === "weapon");
 			
@@ -697,23 +798,32 @@ Hooks.on("argonInit", (CoreHUD) => {
 		}
 		
 		async _onDrop(event) {
-			console.log(event);
+			let itemID;
 			
-			try {      
-				event.preventDefault();
-				event.stopPropagation();
-				const data = JSON.parse(event.dataTransfer.getData("text/plain"));
-				if(data?.type !== "weapon") return;
+			if (this.lastdragID) {
+				itemID = this.lastdragID;
+			}
+			else {
+				try {      
+					event.preventDefault();
+					event.stopPropagation();
+					const data = JSON.parse(event.dataTransfer.getData("text/plain"));
+					if(data?.type !== "weapon") return;
+					itemID = data.itemId;
+				} catch (error) {
+					
+				}
+			}
+			
+			if (itemID) {
 				const set = event.currentTarget.dataset.set;
 				const slot = event.currentTarget.dataset.slot;
 				const sets = this.actor.getFlag("enhancedcombathud", "weaponSets") || {};
 				sets[set] = sets[set] || {};
-				sets[set][slot] = data.itemId;
+				sets[set][slot] = itemID;
 
 				await this.actor.setFlag("enhancedcombathud", "weaponSets", sets);
 				await this.render();
-			} catch (error) {
-				
 			}
 		}
 		

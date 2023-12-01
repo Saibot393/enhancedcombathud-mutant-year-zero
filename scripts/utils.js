@@ -57,7 +57,7 @@ async function getTooltipDetails(item, actortype) {
 							break;
 					}
 					break;
-				case "range":
+				case "ranged":
 					skill = "SHOOT";
 					break;
 			}
@@ -204,7 +204,7 @@ function openItemRollDialoge(item, actor) {
 						break;
 				}
 				break;
-			case "range":
+			case "ranged":
 				skill = "SHOOT";
 				break;
 		}
