@@ -23,14 +23,7 @@ Hooks.on("argonInit", (CoreHUD) => {
 				}
 				break;
 			case "react":
-				if (ui.ARGON.components.main[1].isActionUsed) {
-					ui.ARGON.components.main[0].isActionUsed = true;
-					ui.ARGON.components.main[0].updateActionUse()
-				}
-				else {
-					ui.ARGON.components.main[1].isActionUsed = true;
-					ui.ARGON.components.main[1].updateActionUse()
-				}
+				consumeAction("action");
 				break;
 		}
 	}
@@ -695,34 +688,13 @@ Hooks.on("argonInit", (CoreHUD) => {
 			
 			const item = this.item;
 			
-			switch(this.actor.system.creatureType) {
-				case "player" :
-				case "npc" :
-					let skill = item.system.skill;
-					
-					if (skill instanceof Array) {
-						const activeSet = await ui.ARGON.components.weaponSets?.getactiveSet();
-						
-						if (activeSet?.primary?.system.skill) {
-							skill = skill.find(key => key == activeSet.primary.system.skill);
-						}
-						
-						if (skill instanceof Array) {
-							skill = undefined;
-						}
-					}
-					
-					if (skill) {
-						this.actor.sheet.rollSkill(skill);
-					}
-					break;
-				case "MYZ" : 
-					let attribute = item.system.MYZattribute;
-					
-					if (attribute) {
-						this.actor.sheet.rollAttribute(attribute);
-					}
-					break;					
+			if (this.item.system.skill) {
+				if (this.actor.system.creatureType == "robot") {
+					openRollDialoge("skill", this.item.system.skillRobot, this.actor);
+				}
+				else {
+					openRollDialoge("skill", this.item.system.skill, this.actor);
+				}
 			}
 			
 			if (used) {

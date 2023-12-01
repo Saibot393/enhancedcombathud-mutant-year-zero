@@ -78,7 +78,9 @@ function registerMYZECHSItems () {
 			name: game.i18n.localize(ModuleName+".Titles.Defend"),
 			type : "base",
 			system : {
-				description : game.i18n.localize(ModuleName+".Descriptions.Defend")
+				description : game.i18n.localize(ModuleName+".Descriptions.Defend"),
+				skill : "FIGHT",
+				skillRobot : "FORCE"
 			}
 		}
 	}
