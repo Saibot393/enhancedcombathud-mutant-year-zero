@@ -1,5 +1,5 @@
 # Argon-Mutant Year Zero
-An implementation of the [Argon - Combat HUD](https://foundryvtt.com/packages/enhancedcombathud) (by [TheRipper93](https://theripper93.com/) and [Mouse0270](https://github.com/mouse0270)) for the [Mutant Year Zero]([https://foundryvtt.com/packages/vaesen](https://foundryvtt.com/packages/mutant-year-zero)) system. The Argon Combat HUD (CORE) module is required for this module to work.
+An implementation of the [Argon - Combat HUD](https://foundryvtt.com/packages/enhancedcombathud) (by [TheRipper93](https://theripper93.com/) and [Mouse0270](https://github.com/mouse0270)) for the [Mutant Year Zero](https://foundryvtt.com/packages/mutant-year-zero) system. The Argon Combat HUD (CORE) module is required for this module to work.
 
 ![image](https://github.com/Saibot393/enhancedcombathud-mutant-year-zero/assets/137942782/e8d067eb-6f91-49d8-ae3d-b23d8819ece6)
 
