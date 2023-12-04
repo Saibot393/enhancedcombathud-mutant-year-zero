@@ -28,6 +28,10 @@ Hooks.on("argonInit", (CoreHUD) => {
 				break;
 		}
 	}
+	
+	function toggleSnAdrawer() {
+		ui.ARGON.components.drawer.element.querySelector(".ability-toggle").click();
+	}
   
     class MYZPortraitPanel extends ARGON.PORTRAIT.PortraitPanel {
 		constructor(...args) {
@@ -379,6 +383,9 @@ Hooks.on("argonInit", (CoreHUD) => {
 			buttons.push(new MYZItemButton({ item: null, isWeaponSet: true, isPrimary: true }));
 			buttons.push(new ARGON.MAIN.BUTTONS.SplitButton(new MYZSpecialActionButton(specialActions[0]), new MYZSpecialActionButton(specialActions[1])));
 			buttons.push(new MYZButtonPanelButton({type: "ability", color: 0}));
+			if (game.settings.get(ModuleName, "ShowSkills")) {
+				buttons.push(new MYZSpecialActionButton(specialActions[2]));
+			}
 			
 			return buttons.filter(button => button.items == undefined || button.items.length);
 		}
@@ -629,7 +636,8 @@ Hooks.on("argonInit", (CoreHUD) => {
 			return {
 				...prevData,
 				quantity: quantity,
-				hasQuantity: Number.isNumeric(quantity)
+				hasQuantity: Number.isNumeric(quantity),
+				label : this.label
 			}
 		}
 		
@@ -695,6 +703,11 @@ Hooks.on("argonInit", (CoreHUD) => {
 				else {
 					openRollDialoge("skill", this.item.system.skill, this.actor);
 				}
+			}
+			
+			console.log(this.item);
+			if (this.item.flags[ModuleName]?.openskills) {
+				toggleSnAdrawer();
 			}
 			
 			if (used) {

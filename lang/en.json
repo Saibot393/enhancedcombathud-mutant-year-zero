@@ -1,6 +1,8 @@
 {
 	"enhancedcombathud-mutant-year-zero" : {
 		"Titles" : {
+			"accept"					: "accept",
+			"close"						: "close",
 			"ActionAction"				: "ACTIONS",
 			"ManeuverAction"			: "MANEUVERS",
 			"ReAction"					: "REACTIONS",

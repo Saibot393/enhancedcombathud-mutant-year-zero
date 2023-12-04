@@ -28,6 +28,19 @@ function registerMYZECHSItems () {
 			system : {
 				description : game.i18n.localize(ModuleName+".Descriptions.Hinder")
 			}
+		},
+		Skills : {
+			img: "modules/enhancedcombathud-mutant-year-zero/icons/skills.svg",
+			name: game.i18n.localize(MYZ.SKILLS),
+			type : "base",
+			system : {
+				description : ""
+			},
+			flags : {
+				[ModuleName] : {
+					openskills : true
+				}
+			}
 		}
 	}
 	
@@ -89,7 +102,7 @@ function registerMYZECHSItems () {
 	for (let itemset of [MYZECHActionItems, MYZECHManeuverItems, MYZECHReactionItems]) {
 		for (let itemkey of Object.keys(itemset)) {
 			if (itemkey != "groupflags") {
-				itemset[itemkey].flags = {};
+				itemset[itemkey].flags = {...itemset[itemkey].flags};
 				itemset[itemkey].flags[ModuleName] = {...itemset.groupflags, ...itemset[itemkey].flags[ModuleName]};
 				
 				let ReplacementItem = game.items.find(item => item.name == ItemReplacementID + itemkey);

@@ -1,4 +1,4 @@
-All icon in this cirectory are from [Game-icons.net](game-icons.net) under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)
+All icon in this directory are from [Game-icons.net](game-icons.net), used under the [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/) license
 
 The following icons are included
 - By [Lorc](https://lorcblog.blogspot.com/)
@@ -9,6 +9,7 @@ The following icons are included
 	- thumb-up.svg
 	- thumb-down.svg
 	- reload-gun-barrel.svg
+	- skills.svg
 - By [John Colburn](https://ninmunanmu.com/)
 	- pistol-gun.svg
 - By [Skoll](https://game-icons.net/)
