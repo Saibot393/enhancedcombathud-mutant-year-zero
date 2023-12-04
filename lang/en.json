@@ -1,8 +1,9 @@
 {
 	"enhancedcombathud-mutant-year-zero" : {
+		"accept"					: "accept",
+		"close"						: "close",
+		
 		"Titles" : {
-			"accept"					: "accept",
-			"close"						: "close",
 			"ActionAction"				: "ACTIONS",
 			"ManeuverAction"			: "MANEUVERS",
 			"ReAction"					: "REACTIONS",
@@ -44,6 +45,26 @@
 		},
 		
 		"Settings" : {
+			"InjurieTable" : {
+				"name"					: "Critical injuries roll table",
+				"descrp"				: "The table rolled when the strength falls to 0 (ID of table)"
+			},
+			"HMissfireTable" : {
+				"name"					: "Contact Missfire table",
+				"descrp"				: "The table rolled when a contact missfires (ID der Tabelle)"
+			},
+			"MMissfireTable" : {
+				"name"					: "Mutation Missfire table",
+				"descrp"				: "The table rolled when a contact missfires (ID der Tabelle)"
+			},
+			"AMissfireTable" : {
+				"name"					: "Animal power Missfire table",
+				"descrp"				: "The table rolled when an animal power missfires (ID der Tabelle)"
+			},
+			"RMissfireTable" : {
+				"name"					: "Module Missfire table",
+				"descrp"				: "The table rolled when a module missfires (ID der Tabelle)"
+			},
 			"ConsumeResourcePoints" : {
 				"name"					: "Consume resource points",
 				"descrp"				: "If resource points should be consumed on ability use"				

@@ -543,7 +543,7 @@ Hooks.on("argonInit", (CoreHUD) => {
 
 			if (this.item.type == "ability") {
 				if (game.settings.get(ModuleName, "ConsumeResourcePoints")) {
-					let consumeamount = 1;
+					var consumeamount = 1;
 					
 					if (game.settings.get(ModuleName, "AskResourcePointAmount")) {
 						consumeamount = await openNewInput("number", game.i18n.localize(ModuleName+"Titles.ResourceConsume"), game.i18n.localize(ModuleName+"Titles.HowmanyResources"), {defaultValue : 1});
@@ -562,6 +562,17 @@ Hooks.on("argonInit", (CoreHUD) => {
 				}
 				
 				if (used) {
+					if (game.settings.get(ModuleName, "AutoRollMissfires")) {
+						let roll = new Roll(`${consumeamount}d6`);
+						
+						await roll.evaluate();
+						console.log(roll);
+						console.log(roll.dice[0].results.find(result => result.result == 1));
+						if (roll.dice[0].results.find(result => result.result == 1)) {
+							this.rollMissfire(this.actor.system.creatureType);
+						}
+					}
+					
 					this.item.sendToChat();
 				}
 			}
@@ -597,6 +608,33 @@ Hooks.on("argonInit", (CoreHUD) => {
 			}
 			
 			return "action";
+		}
+		
+		async rollMissfire(type) {
+			let tableid;
+			
+			switch (type) {
+				case "human": 
+					tableid = game.settings.get(ModuleName, "HMissfireTable");
+					break;
+				case "mutant": 
+					tableid = game.settings.get(ModuleName, "MMissfireTable");
+					break;
+				case "animal": 
+					tableid = game.settings.get(ModuleName, "AMissfireTable");
+					break;
+				case "robot": 
+					tableid = game.settings.get(ModuleName, "RMissfireTable");
+					break;
+			}
+			
+			console.log(type);
+			console.log(tableid);
+			
+			let table = await fromUuid("RollTable." + tableid);
+			if (table) {
+				table.draw({roll: true, displayChat: true});
+			}
 		}
 	}
   

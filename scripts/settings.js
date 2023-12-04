@@ -12,9 +12,36 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: ""
   });
   
+  game.settings.register(ModuleName, "HMissfireTable", {
+	name: game.i18n.localize(ModuleName+".Settings.HMissfireTable.name"),
+	hint: game.i18n.localize(ModuleName+".Settings.HMissfireTable.descrp"),
+	scope: "world",
+	config: true,
+	type: String,
+	default: ""
+  });
+  
   game.settings.register(ModuleName, "MMissfireTable", {
 	name: game.i18n.localize(ModuleName+".Settings.MMissfireTable.name"),
 	hint: game.i18n.localize(ModuleName+".Settings.MMissfireTable.descrp"),
+	scope: "world",
+	config: true,
+	type: String,
+	default: ""
+  });
+  
+  game.settings.register(ModuleName, "AMissfireTable", {
+	name: game.i18n.localize(ModuleName+".Settings.AMissfireTable.name"),
+	hint: game.i18n.localize(ModuleName+".Settings.AMissfireTable.descrp"),
+	scope: "world",
+	config: true,
+	type: String,
+	default: ""
+  });
+  
+  game.settings.register(ModuleName, "RMissfireTable", {
+	name: game.i18n.localize(ModuleName+".Settings.RMissfireTable.name"),
+	hint: game.i18n.localize(ModuleName+".Settings.RMissfireTable.descrp"),
 	scope: "world",
 	config: true,
 	type: String,
@@ -42,9 +69,9 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	requiresReload: false
   });
   
-  game.settings.register(ModuleName, "AutoRollMMissfires", {
-	name: game.i18n.localize(ModuleName+".Settings.AutoRollMMissfires.name"),
-	hint: game.i18n.localize(ModuleName+".Settings.AutoRollMMissfires.descrp"),
+  game.settings.register(ModuleName, "AutoRollMissfires", {
+	name: game.i18n.localize(ModuleName+".Settings.AutoRollMissfires.name"),
+	hint: game.i18n.localize(ModuleName+".Settings.AutoRollMissfires.descrp"),
 	scope: "client",
 	config: true,
 	type: Boolean,

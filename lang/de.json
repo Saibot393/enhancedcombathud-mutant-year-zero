@@ -1,8 +1,9 @@
 {
 	"enhancedcombathud-mutant-year-zero" : {
+		"accept"					: "akzeptieren",
+		"close"						: "schließen",
+		
 		"Titles" : {
-			"accept"					: "akzeptieren",
-			"close"						: "schließen",
 			"ActionAction"				: "AKTIONEN",
 			"ManeuverAction"			: "MANEUVER",
 			"ReAction"					: "REAKTIONEN",
@@ -44,6 +45,26 @@
 		},
 		
 		"Settings" : {
+			"InjurieTable" : {
+				"name"					: "Kritische Verletzungen Tabelle",
+				"descrp"				: "Die Tabelle auf welche gewürfelt wird wenn die stärke auf 0 sinkt (ID der Tabelle)"
+			},
+			"HMissfireTable" : {
+				"name"					: "Kontakt Fehlschlag Tabelle",
+				"descrp"				: "Die Tabelle auf welche gewürfelt wird wenn ein Kontakt fehschlägt (ID der Tabelle)"
+			},
+			"MMissfireTable" : {
+				"name"					: "Mutations Fehlschlag Tabelle",
+				"descrp"				: "Die Tabelle auf welche gewürfelt wird wenn eine Mutation fehschlägt (ID der Tabelle)"
+			},
+			"AMissfireTable" : {
+				"name"					: "Tierfähigkeit Fehlschlag Tabelle",
+				"descrp"				: "Die Tabelle auf welche gewürfelt wird wenn eine Tierfähigkeit fehschlägt (ID der Tabelle)"
+			},
+			"RMissfireTable" : {
+				"name"					: "Modul Fehlschlag Tabelle",
+				"descrp"				: "Die Tabelle auf welche gewürfelt wird wenn ein Modul fehschlägt (ID der Tabelle)"
+			},
 			"ConsumeResourcePoints" : {
 				"name"					: "Verbrauche Resourcen Punkte",
 				"descrp"				: "Ob Resourcen Punkte beim Einsatz von Fertigkeiten verbraucht werden sollen"				
