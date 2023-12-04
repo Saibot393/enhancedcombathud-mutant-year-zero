@@ -10,9 +10,19 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	config: true,
 	type: Boolean,
 	default: false,
-	requiresReload: true
+	requiresReload: false
   });
   
+  game.settings.register(ModuleName, "AskResourcePointAmount", {
+	name: game.i18n.localize(ModuleName+".Settings.AskResourcePointAmount.name"),
+	hint: game.i18n.localize(ModuleName+".Settings.AskResourcePointAmount.descrp"),
+	scope: "client",
+	config: true,
+	type: Boolean,
+	default: false,
+	requiresReload: false
+  }); 
+ 
   game.settings.register(ModuleName, "ConsumeBullets", {
 	name: game.i18n.localize(ModuleName+".Settings.ConsumeBullets.name"),
 	hint: game.i18n.localize(ModuleName+".Settings.ConsumeBullets.descrp"),
@@ -20,7 +30,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	config: true,
 	type: Boolean,
 	default: false,
-	requiresReload: true
+	requiresReload: false
   });
   
   game.settings.register(ModuleName, "ShowTalents", {

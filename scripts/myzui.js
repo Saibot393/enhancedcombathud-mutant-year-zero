@@ -1,5 +1,6 @@
 import {registerMYZECHSItems, MYZECHActionItems, MYZECHManeuverItems, MYZECHReactionItems} from "./specialItems.js";
 import {ModuleName, getTooltipDetails, openRollDialoge, openItemRollDialoge} from "./utils.js";
+import {openNewInput} from "./popupInput.js";
 
 Hooks.on("argonInit", (CoreHUD) => {
     const ARGON = CoreHUD.ARGON;
@@ -514,7 +515,13 @@ Hooks.on("argonInit", (CoreHUD) => {
 
 			if (this.item.type == "ability") {
 				if (game.settings.get(ModuleName, "ConsumeResourcePoints")) {
-					const newvalue = this.actor.system.resource_points.value - 1;
+					let consumeamount = 1;
+					
+					if (game.settings.get(ModuleName, "AskResourcePointAmount")) {
+						consumeamount = await openNewInput("number", game.i18n.localize(ModuleName+"Titles.ResourceConsume"), game.i18n.localize(ModuleName+"Titles.HowmanyResources"), {defaultValue : 1});
+					}
+					
+					const newvalue = this.actor.system.resource_points.value - consumeamount;
 					
 					if (newvalue >= 0) {
 						this.actor.update({system : {resource_points : {value : newvalue}}});
