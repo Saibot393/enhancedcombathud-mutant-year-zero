@@ -31,7 +31,7 @@ function registerMYZECHSItems () {
 		},
 		Skills : {
 			img: "modules/enhancedcombathud-mutant-year-zero/icons/skills.svg",
-			name: game.i18n.localize(MYZ.SKILLS),
+			name: game.i18n.localize("MYZ.SKILLS"),
 			type : "base",
 			system : {
 				description : ""

@@ -36,6 +36,8 @@ Hooks.on("argonInit", (CoreHUD) => {
     class MYZPortraitPanel extends ARGON.PORTRAIT.PortraitPanel {
 		constructor(...args) {
 			super(...args);
+			
+			this.wasDead = {};
 		}
 
 		get description() {
@@ -45,7 +47,19 @@ Hooks.on("argonInit", (CoreHUD) => {
 		}
 
 		get isDead() {
-			return Object.values(this.actor.system.attributes).find(attribute => attribute.value <= 0 && attribute.max > 0);
+			let isDead = {};
+			
+			Object.keys(this.actor.system.attributes).forEach(attribute => isDead[attribute] = (this.actor.system.attributes[attribute].value <= 0 && this.actor.system.attributes[attribute].max > 0));
+			
+			if (isDead.strength && !this.wasDead.strength) {
+				if (game.settings.get(ModuleName, "AutoRollInjuries")) {
+					this.rollInjuries();
+				}
+			}
+			
+			this.wasDead = isDead;
+			
+			return Object.values(isDead).find(value => value);
 		}
 
 		async getStatBlocks() {
@@ -183,6 +197,13 @@ Hooks.on("argonInit", (CoreHUD) => {
 			}
 					
 			this.element.querySelector(".player-buttons").style.right = "0%";
+		}
+		
+		async rollInjuries() {
+			let table = await fromUuid("RollTable." + game.settings.get(ModuleName, "InjurieTable"));
+			if (table) {
+				table.draw({roll: true, displayChat: true});
+			}
 		}
 	}
 	
