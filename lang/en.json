@@ -1,9 +1,9 @@
 {
 	"enhancedcombathud-mutant-year-zero" : {
-		"accept"					: "accept",
-		"close"						: "close",
 		
 		"Titles" : {
+			"accept"					: "accept",
+			"close"						: "close",
 			"ActionAction"				: "ACTIONS",
 			"ManeuverAction"			: "MANEUVERS",
 			"ReAction"					: "REACTIONS",
@@ -22,7 +22,9 @@
 			"Help"						: "Help",
 			"Hinder"					: "Hinder",
 			"Reload"					: "Reload",
-			"Defend"					: "Defend"
+			"Defend"					: "Defend",
+			"ResourceConsume"			: "Resource consumption",
+			"HowmanyResources"			: "How many points do you wish to spend?"
 		},
 		
 		"Descriptions" : {
@@ -41,7 +43,8 @@
 			"Help"						: "See Mutant Year Zero core rules book p.??",
 			"Hinder"					: "See Mutant Year Zero core rules book p.??",
 			"Reload"					: "See Mutant Year Zero core rules book p.??",
-			"Defend"					: "See Mutant Year Zero core rules book p.??"
+			"Defend"					: "See Mutant Year Zero core rules book p.??",
+			"Skills"					: "Opens/closes the Attributes & Skills menu"
 		},
 		
 		"Settings" : {
@@ -65,9 +68,21 @@
 				"name"					: "Module Missfire table",
 				"descrp"				: "The table rolled when a module missfires (ID der Tabelle)"
 			},
+			"AutoRollInjuries" : {
+				"name"					: "Automatically roll injuries",
+				"descrp"				: "If critical injuries should be rolled automatically when the strength falls to 0"				
+			},
 			"ConsumeResourcePoints" : {
 				"name"					: "Consume resource points",
 				"descrp"				: "If resource points should be consumed on ability use"				
+			},
+			"AutoRollMissfires" : {
+				"name"					: "Automatically roll Missfires",
+				"descrp"				: "If Missfires should be rolled automatically when a 1 is rolled on resource-point consumption"				
+			},
+			"AskResourcePointAmount" : {
+				"name"					: "Ask for resource point consumption",
+				"descrp"				: "If the use of an ability should trigger a popup asking how many resource points should be consumed"				
 			},
 			"ConsumeBullets" : {
 				"name"					: "Consume Bullets",
@@ -76,6 +91,10 @@
 			"ShowTalents" : {
 				"name"					: "Show talents button",
 				"descrp"				: "If a button for talents should be shown"				
+			},
+			"ShowSkill" : {
+				"name"					: "Show skills button",
+				"descrp"				: "If a button for skills should be shown in the action group"				
 			},
 			"UseDiceCircles" : {
 				"name"					: "Use dice symbols",

@@ -546,7 +546,7 @@ Hooks.on("argonInit", (CoreHUD) => {
 					var consumeamount = 1;
 					
 					if (game.settings.get(ModuleName, "AskResourcePointAmount")) {
-						consumeamount = await openNewInput("number", game.i18n.localize(ModuleName+"Titles.ResourceConsume"), game.i18n.localize(ModuleName+"Titles.HowmanyResources"), {defaultValue : 1});
+						consumeamount = await openNewInput("number", game.i18n.localize(ModuleName+".Titles.ResourceConsume"), game.i18n.localize(ModuleName+".Titles.HowmanyResources"), {defaultValue : 1});
 					}
 					
 					const newvalue = this.actor.system.resource_points.value - consumeamount;
@@ -566,8 +566,6 @@ Hooks.on("argonInit", (CoreHUD) => {
 						let roll = new Roll(`${consumeamount}d6`);
 						
 						await roll.evaluate();
-						console.log(roll);
-						console.log(roll.dice[0].results.find(result => result.result == 1));
 						if (roll.dice[0].results.find(result => result.result == 1)) {
 							this.rollMissfire(this.actor.system.creatureType);
 						}

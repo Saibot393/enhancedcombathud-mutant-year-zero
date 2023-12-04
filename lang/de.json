@@ -1,9 +1,8 @@
 {
 	"enhancedcombathud-mutant-year-zero" : {
-		"accept"					: "akzeptieren",
-		"close"						: "schließen",
-		
 		"Titles" : {
+			"accept"					: "akzeptieren",
+			"close"						: "schließen",
 			"ActionAction"				: "AKTIONEN",
 			"ManeuverAction"			: "MANEUVER",
 			"ReAction"					: "REAKTIONEN",
@@ -22,7 +21,9 @@
 			"Help"						: "Helfen",
 			"Hinder"					: "Hindern",
 			"Reload"					: "Nachladen",
-			"Defend"					: "Verteidigen"
+			"Defend"					: "Verteidigen",
+			"ResourceConsume"			: "Resourcen Verbrauchen",
+			"HowmanyResources"			: "Wie viele Punkte willst du verwenden?"
 		},
 		
 		"Descriptions" : {
@@ -41,13 +42,14 @@
 			"Help"						: "Siehe Mutant Year Zero Regelbuch S.??",
 			"Hinder"					: "Siehe Mutant Year Zero Regelbuch S.??",
 			"Reload"					: "Siehe Mutant Year Zero Regelbuch S.??",
-			"Defend"					: "Siehe Mutant Year Zero Regelbuch S.??"
+			"Defend"					: "Siehe Mutant Year Zero Regelbuch S.??",
+			"Skills"					: "Öffnet/schließt das Attribute & Fertigkeiten Menu"
 		},
 		
 		"Settings" : {
 			"InjurieTable" : {
 				"name"					: "Kritische Verletzungen Tabelle",
-				"descrp"				: "Die Tabelle auf welche gewürfelt wird wenn die stärke auf 0 sinkt (ID der Tabelle)"
+				"descrp"				: "Die Tabelle auf welche gewürfelt wird wenn die stärke auf 0 fällt (ID der Tabelle)"
 			},
 			"HMissfireTable" : {
 				"name"					: "Kontakt Fehlschlag Tabelle",
@@ -65,9 +67,21 @@
 				"name"					: "Modul Fehlschlag Tabelle",
 				"descrp"				: "Die Tabelle auf welche gewürfelt wird wenn ein Modul fehschlägt (ID der Tabelle)"
 			},
+			"AutoRollInjuries" : {
+				"name"					: "Verletzungen automatisch Würfeln",
+				"descrp"				: "Ob kritische Verletzungen automatisch gewürfelt werden sollen, wenn die stärke auf 0 fällt"				
+			},
 			"ConsumeResourcePoints" : {
 				"name"					: "Verbrauche Resourcen Punkte",
 				"descrp"				: "Ob Resourcen Punkte beim Einsatz von Fertigkeiten verbraucht werden sollen"				
+			},
+			"AutoRollMissfires" : {
+				"name"					: "Fehlschläge automatisch Würfeln",
+				"descrp"				: "Ob Fehlschläge automatisch gewürfelt werden sollen, wenn bei Resourcenpunkt Verbrauch eine 1 gewürfelt wird"				
+			},
+			"AskResourcePointAmount" : {
+				"name"					: "Verbrauchte resourcenpunkte erfragen",
+				"descrp"				: "Ob vor nutzung einer Fähigkeit gefragt werden soll, wie viele Punkte vrbaucht werden sollen"				
 			},
 			"ConsumeBullets" : {
 				"name"					: "Verbrauche Kugeln",
@@ -76,6 +90,10 @@
 			"ShowTalents" : {
 				"name"					: "Zeige Talente Knopf",
 				"descrp"				: "Ob ein Knopf für Talente angezeigt werden soll"				
+			},
+			"ShowSkills" : {
+				"name"					: "Zeige Fertigkeiten Knopf",
+				"descrp"				: "Ob ein Knopf für Fertigkeiten in der Aktionsgruppe angezeigt werden soll"				
 			},
 			"UseDiceCircles" : {
 				"name"					: "Nutze Würfel Symbole",

@@ -34,7 +34,7 @@ function registerMYZECHSItems () {
 			name: game.i18n.localize("MYZ.SKILLS"),
 			type : "base",
 			system : {
-				description : ""
+				description : game.i18n.localize(ModuleName+".Descriptions.Skills")
 			},
 			flags : {
 				[ModuleName] : {
