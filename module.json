@@ -28,7 +28,7 @@
     }
   ],
   "styles": [
-    "styles/MYZCustom.css"
+    "styles/myzCustom.css"
   ],
   "esmodules": [
 	"scripts/settings.js",
