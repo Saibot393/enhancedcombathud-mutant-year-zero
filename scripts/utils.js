@@ -74,7 +74,7 @@ async function getTooltipDetails(item, actortype) {
 			break;
 	}
 
-	if (description) description = await TextEditor.enrichHTML(description);
+	if (description) description = sanitize(description);
 	
 	if (bonus) {
 		details.push({
@@ -213,6 +213,17 @@ function openItemRollDialoge(item, actor) {
 	}
 }
 
+function pushRoll(actor) {
+	actor.sheet.diceRoller.push({ actor: actor })
+}
+
+function sanitize(string) {
+	let parser = new DOMParser();
+	
+	let html = parser.parseFromString(string, 'text/html');
+	
+	return html.body.innerText;
+}
 
 export { ModuleName, getTooltipDetails, openRollDialoge, openItemRollDialoge }
 

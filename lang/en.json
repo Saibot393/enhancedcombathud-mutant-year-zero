@@ -91,7 +91,7 @@
 				"name"					: "Show talents button",
 				"descrp"				: "If a button for talents should be shown"				
 			},
-			"ShowSkill" : {
+			"ShowSkills" : {
 				"name"					: "Show skills button",
 				"descrp"				: "If a button for skills should be shown in the action group"				
 			},
