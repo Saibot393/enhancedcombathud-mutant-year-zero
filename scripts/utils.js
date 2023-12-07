@@ -213,6 +213,14 @@ function openItemRollDialoge(item, actor) {
 	}
 }
 
+function openArmorRollDialoge (actor) {
+	game.myz.RollDialog.prepareRollDialog({
+		rollName: game.i18n.localize("MYZ.ARMOR"),
+		diceRoller: actor.sheet.diceRoller,
+		gearDefault: actor.system.armorrating.value
+    });
+}
+
 function pushRoll(actor) {
 	actor.sheet.diceRoller.push({ actor: actor })
 }
@@ -225,7 +233,15 @@ function sanitize(string) {
 	return html.body.innerText;
 }
 
-export { ModuleName, getTooltipDetails, openRollDialoge, openItemRollDialoge }
+function innerHTMLselector(html, selector, innerHTML) {
+	let returnElement;
+	
+	html.querySelectorAll(selector).forEach((element) => {if (element.innerHTML == innerHTML) returnElement = element});
+	
+	return returnElement;
+}
+
+export { ModuleName, getTooltipDetails, openRollDialoge, openItemRollDialoge, openArmorRollDialoge, pushRoll, innerHTMLselector }
 
 /*
     _onRollAttribute(event) {

@@ -1,5 +1,5 @@
 import {registerMYZECHSItems, MYZECHActionItems, MYZECHManeuverItems, MYZECHReactionItems} from "./specialItems.js";
-import {ModuleName, getTooltipDetails, openRollDialoge, openItemRollDialoge} from "./utils.js";
+import {ModuleName, getTooltipDetails, openRollDialoge, openItemRollDialoge, openArmorRollDialoge, pushRoll, innerHTMLselector} from "./utils.js";
 import {openNewInput} from "./popupInput.js";
 
 Hooks.on("argonInit", (CoreHUD) => {
@@ -111,7 +111,10 @@ Hooks.on("argonInit", (CoreHUD) => {
 							text: game.i18n.localize(`MYZ.ATTRIBUTE_${key.toUpperCase()}_${this.actor.system.creatureType.toUpperCase()}`).toUpperCase().slice(0,3),
 						},
 						{
+							isinput : true,
+							inputtype : "number",
 							text: attributes[key].value,
+							changevent : (newvalue) => this.actor.update({system : {attributes : {[key] : {value : newvalue}}}})
 						},
 						{
 							text: "/",
@@ -149,6 +152,12 @@ Hooks.on("argonInit", (CoreHUD) => {
 		async _renderInner(data) {
 			await super._renderInner(data);
 			
+			const armorBlock = innerHTMLselector(this.element, "span", game.i18n.localize(this.actor.system.armorrating.label))?.parentElement;
+
+			if (armorBlock) {
+				armorBlock.onclick = () => {openArmorRollDialoge(this.actor)};
+			}
+			
 			const statBlocks = await this.getsideStatBlocks();
 			for (const position of ["left", "right"]) {
 				const sb = document.createElement("div");
@@ -158,12 +167,25 @@ Hooks.on("argonInit", (CoreHUD) => {
 				for (const block of statBlocks[position]) {
 					const sidesb = document.createElement("div");
 					sidesb.classList.add("portrait-stat-block");
+					sidesb.style.paddingLeft = "0.35em";
+					sidesb.style.paddingRight = "0.35em";
 					for (const stat of block) {
 						if (!stat.position) {
-							const span = document.createElement("span");
-							span.innerText = stat.text;
-							span.style.color = stat.color;
-							sidesb.appendChild(span);
+							let displayer;
+							if (stat.isinput) {
+								displayer = document.createElement("input");
+								displayer.type = stat.inputtype; 
+								displayer.value = stat.text;
+								displayer.style.width = "1.5em";
+								displayer.style.color = "#ffffff";
+								displayer.onchange = () => {stat.changevent(displayer.value)};
+							}
+							else {
+								displayer = document.createElement("span");
+								displayer.innerText = stat.text;
+							}
+							displayer.style.color = stat.color;
+							sidesb.appendChild(displayer);
 						}
 					}
 					sb.appendChild(sidesb);
@@ -371,6 +393,37 @@ Hooks.on("argonInit", (CoreHUD) => {
 
 		get title() {
 			return `${game.i18n.localize("MYZ.ATTRIBUTES")} & ${game.i18n.localize("MYZ.SKILLS")}`;
+		}
+		
+		async _renderInner() {
+			await super._renderInner();
+			
+			const togglebar = this.element.querySelectorAll("li.ability-title")[2];
+			togglebar.style.display = "flex";
+			togglebar.style.flexDirection = "row";
+			
+			/*
+			let spacerdiv = document.createElement("div");//left spacer
+			spacerdiv.style.flexGrow = "1";
+			togglebar.appendChild(spacerdiv);
+			*/
+			
+			const pushbutton = document.createElement("span");
+			pushbutton.innerHTML = game.i18n.localize("MYZ.PUSH");
+			pushbutton.style.position = "absolute";
+			pushbutton.style.right = "3em";
+			pushbutton.style.borderStyle = "solid";
+			pushbutton.style.borderWidth = "0.5px";
+			pushbutton.style.padding = "1px";
+			pushbutton.style.paddingBottom = "0px";
+			pushbutton.onclick = (event) => {event.stopPropagation(); pushRoll(this.actor);}
+			togglebar.appendChild(pushbutton);
+			
+			/*
+			spacerdiv = document.createElement("div"); //right spacer
+			spacerdiv.style.flexGrow = "1";
+			togglebar.appendChild(spacerdiv);
+			*/
 		}
 	}
   
