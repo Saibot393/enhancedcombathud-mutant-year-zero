@@ -1,3 +1,8 @@
+## v1.1.1
+- Added missing translation
+- Added HTML sanitization for descriptions
+- Fixed bug that could cause some users to not be able to install the module
+
 ## v1.1.0
 - Added world setting Critical injuries roll table to set which table should be rolled for critical injuries
 - Added world settings for Missfire tables (contacts, mutations, animal powers, modules) to set which table should be rolled for missfires
