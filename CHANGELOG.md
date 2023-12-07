@@ -1,3 +1,8 @@
+## v1.2.0
+- The armor indicator on the profile can new be clicked to roll armor
+- The current attribute value can now be changed from within the profile picture
+- Rolls can now be pushed from the "PUSH" button in the Attributes & Skills bar
+
 ## v1.1.1
 - Added missing translation
 - Added HTML sanitization for descriptions
