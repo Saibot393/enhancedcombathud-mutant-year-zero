@@ -679,9 +679,6 @@ Hooks.on("argonInit", (CoreHUD) => {
 					break;
 			}
 			
-			console.log(type);
-			console.log(tableid);
-			
 			let table = await fromUuid("RollTable." + tableid);
 			if (table) {
 				table.draw({roll: true, displayChat: true});
