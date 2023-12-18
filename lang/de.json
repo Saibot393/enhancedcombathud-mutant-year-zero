@@ -23,7 +23,20 @@
 			"Reload"					: "Nachladen",
 			"Defend"					: "Verteidigen",
 			"ResourceConsume"			: "Resourcen Verbrauchen",
-			"HowmanyResources"			: "Wie viele Punkte willst du verwenden?"
+			"HowmanyResources"			: "Wie viele Punkte willst du verwenden?",
+			
+			"LevelUP"					: "Löse Charakterverbesserung aus",
+			"openXPoptionsmenu"			: "Erfahrungsoptionen anpassen",
+			"XPOptions"					: "Erfahrungsoptionen",
+			"defaultXPOption" : {
+				"name"					: "Neue Erfahrungsoption"
+			},
+			"addXPOption"				: "Füge neue Erfahrungsoption hinzu",
+			"confirmChanges"			: "Bestätigen und speichern",
+			"OpenXPMenu"				: "Öffne Charakterverbesserungs Menü",
+			"CharacterAdvancement"		: "Charakterverbesserungs",
+			"CheckWhichApplies"			: "Kreuze alle Fragen an welche du mit \"ja\" beantworten kannst:",
+			"confirmXP"					: "Bestätigen"
 		},
 		
 		"Descriptions" : {
@@ -47,6 +60,10 @@
 		},
 		
 		"Settings" : {
+			"useXPautomation" : {
+				"name"					: "Nutze Erfahrungs Automatisierung",
+				"descrp"				: "Ob ein Knopf in der Kontrollleiste angezeigt werden soll um die automatische Charakterverbesserung für Spieler aus zu lösen"
+			},
 			"InjurieTable" : {
 				"name"					: "Kritische Verletzungen Tabelle",
 				"descrp"				: "Die Tabelle auf welche gewürfelt wird wenn die stärke auf 0 fällt (ID der Tabelle)"

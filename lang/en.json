@@ -23,7 +23,20 @@
 			"Reload"					: "Reload",
 			"Defend"					: "Defend",
 			"ResourceConsume"			: "Resource consumption",
-			"HowmanyResources"			: "How many points do you wish to spend?"
+			"HowmanyResources"			: "How many points do you wish to spend?",
+			
+			"LevelUP"					: "Trigger character advancement",
+			"openXPoptionsmenu"			: "Configure Experince options",
+			"XPOptions"					: "Experience Options",
+			"defaultXPOption" : {
+				"name"					: "New Experience option"
+			},
+			"addXPOption"				: "Add Experience option",
+			"confirmChanges"			: "Confirm and save",
+			"OpenXPMenu"				: "Open character advancement menu",
+			"CharacterAdvancement"		: "Character advancement",
+			"CheckWhichApplies"			: "Check all questions you can answer with \"yes\":",
+			"confirmXP"					: "Confirm"
 		},
 		
 		"Descriptions" : {
@@ -47,6 +60,10 @@
 		},
 		
 		"Settings" : {
+			"useXPautomation" : {
+				"name"					: "Use XP automation",
+				"descrp"				: "If a button should be shown in the control menu to trigger automatic character advancement for players"
+			},
 			"InjurieTable" : {
 				"name"					: "Critical injuries roll table",
 				"descrp"				: "The table rolled when the strength falls to 0 (ID of table)"
