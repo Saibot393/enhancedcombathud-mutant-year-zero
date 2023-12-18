@@ -1,3 +1,6 @@
+## v1.2.1
+- Small ui fix for compatibility with Argon Core v2.4.0
+
 ## v1.2.0
 - The armor indicator on the profile can new be clicked to roll armor
 - The current attribute value can now be changed from within the profile picture
