@@ -31,7 +31,7 @@ Hooks.on("argonInit", (CoreHUD) => {
 	}
 	
 	function toggleSnAdrawer() {
-		ui.ARGON.components.drawer.element.querySelector(".ability-toggle").click();
+		ui.ARGON.components.drawer.element.querySelector(".ability-toggle").querySelector("li").click();
 	}
   
     class MYZPortraitPanel extends ARGON.PORTRAIT.PortraitPanel {
