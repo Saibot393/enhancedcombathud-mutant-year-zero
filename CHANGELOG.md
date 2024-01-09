@@ -1,3 +1,8 @@
+## v1.3.2
+- Added world setting Special actions to chat to post the description of used special actions to chat
+- The result of the missfire dice for abilities will now be posted to the chat
+- The missfire table will no longer roll automatically instead requiring the use to click the "Roll missfire" button in the chat
+
 ## v1.3.1
 - Fixed bug that prevented the "SKill" slow action button from working
 
