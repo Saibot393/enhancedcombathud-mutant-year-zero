@@ -137,6 +137,15 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	requiresReload: true
   });
   
+  game.settings.register(ModuleName, "specialactionstochat", {
+	name: game.i18n.localize(ModuleName+".Settings.specialactionstochat.name"),
+	hint: game.i18n.localize(ModuleName+".Settings.specialactionstochat.descrp"),
+	scope: "client",
+	config: true,
+	type: Boolean,
+	default: false
+  });
+  
   game.settings.register(ModuleName, "UseDiceCircles", {
 	name: game.i18n.localize(ModuleName+".Settings.UseDiceCircles.name"),
 	hint: game.i18n.localize(ModuleName+".Settings.UseDiceCircles.descrp"),

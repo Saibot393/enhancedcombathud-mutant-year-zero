@@ -1,5 +1,5 @@
 import {registerMYZECHSItems, MYZECHActionItems, MYZECHManeuverItems, MYZECHReactionItems} from "./specialItems.js";
-import {ModuleName, getTooltipDetails, openRollDialoge, openItemRollDialoge, openArmorRollDialoge, pushRoll, innerHTMLselector} from "./utils.js";
+import {ModuleName, getTooltipDetails, openRollDialoge, openItemRollDialoge, openArmorRollDialoge, pushRoll, innerHTMLselector, postChatCard, replacewords} from "./utils.js";
 import {openNewInput} from "./popupInput.js";
 import {gainXPWindow} from "./levelup.js";
 
@@ -648,10 +648,28 @@ Hooks.on("argonInit", (CoreHUD) => {
 					if (game.settings.get(ModuleName, "AutoRollMissfires")) {
 						let roll = new Roll(`${consumeamount}d6`);
 						
+						let buttons = {};
+						
 						await roll.evaluate();
-						if (roll.dice[0].results.find(result => result.result == 1)) {
-							this.rollMissfire(this.actor.system.creatureType);
+						
+						let images = roll.dice[0].results.map(result => `systems/mutant-year-zero/ui/dice-base-${result.result}.png`);
+						
+						let rollCallback = () => {
+							console.log("jup");
+							if (roll.dice[0].results.find(result => result.result == 1)) {
+								this.rollMissfire(this.actor.system.creatureType);
+							}
 						}
+						
+						if (roll.dice[0].results.find(result => result.result == 1)) {
+							buttons.missfires = {
+								label : game.i18n.localize(ModuleName + ".Messages.Abilityuse.Button"),
+								onclick : rollCallback
+							}
+						}
+						
+						postChatCard(this.actor, {title : "", subtitle : replacewords(game.i18n.localize(ModuleName + ".Messages.Abilityuse.Title"), {AbilityName : this.item.name, AbilityCost : consumeamount, AbilityCostName : game.i18n.localize("MYZ.RESOURCE_POINTS_" + this.actor.system.creatureType.toUpperCase())}), images : images, description : "", buttons : buttons, whispered : true});
+						
 					}
 					
 					this.item.sendToChat();
@@ -842,13 +860,16 @@ Hooks.on("argonInit", (CoreHUD) => {
 				}
 			}
 			
-			console.log(this.item);
 			if (this.item.flags[ModuleName]?.openskills) {
 				toggleSnAdrawer();
 			}
 			
 			if (used) {
 				MYZSpecialActionButton.consumeActionEconomy(this.item);
+				
+				if (game.settings.get(ModuleName, "specialactionstochat")) {
+					postChatCard(this.actor, {title : this.label, description : this.item.system.description})
+				}
 			}
 		}
 

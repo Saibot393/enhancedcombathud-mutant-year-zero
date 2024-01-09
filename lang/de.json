@@ -59,6 +59,13 @@
 			"Skills"					: "Öffnet/schließt das Attribute & Fertigkeiten Menu"
 		},
 		
+		"Messages" : {
+			"Abilityuse" : {
+				"Title"					: "Du hast {AbilityName} benutzt und dabei {AbilityCost} {AbilityCostName} verbraucht:",
+				"Button"				: "Fehlzündung würfeln"
+			}
+		},
+		
 		"Settings" : {
 			"useXPautomation" : {
 				"name"					: "Nutze Erfahrungs Automatisierung",
@@ -111,6 +118,10 @@
 			"ShowSkills" : {
 				"name"					: "Zeige Fertigkeiten Knopf",
 				"descrp"				: "Ob ein Knopf für Fertigkeiten in der Aktionsgruppe angezeigt werden soll"				
+			},
+			"specialactionstochat" : {
+				"name"					: "Spezielle Aktionen in Chat",
+				"descrp"				: "Ob die Beschreibung von speziellen Aktionen in den Chat gepostet werden soll, wenn sie benutzt werden"
 			},
 			"UseDiceCircles" : {
 				"name"					: "Nutze Würfel Symbole",

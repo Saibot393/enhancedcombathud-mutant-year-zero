@@ -241,85 +241,64 @@ function innerHTMLselector(html, selector, innerHTML) {
 	return returnElement;
 }
 
-export { ModuleName, getTooltipDetails, openRollDialoge, openItemRollDialoge, openArmorRollDialoge, pushRoll, innerHTMLselector }
-
-/*
-    _onRollAttribute(event) {
-        event.preventDefault();
-        const attName = $(event.currentTarget).data("attribute");
-        const attVal = this.actor.system.attributes[attName].value;
-        let rollName = `MYZ.ATTRIBUTE_${attName.toUpperCase()}_${this.actor.system.creatureType.toUpperCase()}`;
-
-        const itmMap = this.actor.items.filter(itm => itm.system.modifiers != undefined)
-        const itemsThatModifyAttribute = itmMap.filter(i => i.system.modifiers[attName] != 0)
-        let modifiersToAttributes = []
-        const baseDiceModifier = itemsThatModifyAttribute.reduce(function (acc, obj) {
-            modifiersToAttributes.push({ 'type': obj.type, 'name': obj.name, 'value': obj.system.modifiers[attName] })
-            return acc + obj.system.modifiers[attName];
-        }, 0);
-        let baseDiceTotal = parseInt(attVal) + parseInt(baseDiceModifier)
-        if(baseDiceTotal<0) baseDiceTotal = 0;
-
-        const applyedModifiersInfo = this._getModifiersInfo({
-            skillDiceTotal: 0,
-            baseDiceTotal: baseDiceTotal,
-            gearDiceTotal: 0,
-            modifiersToSkill: [],
-            modifiersToAttributes: modifiersToAttributes,
-            modifiersToGear: []
-        })
-
-        RollDialog.prepareRollDialog({
-            rollName: rollName,
-            attributeName: attName,
-            diceRoller: this.diceRoller,
-            baseDefault: baseDiceTotal,
-            skillDefault: 0,
-            gearDefault: 0,
-            modifierDefault: 0,
-            applyedModifiers: applyedModifiersInfo
-        });
-    }
+async function postChatCard(actor, infos = {title : "", subtitle : "", images : [], description : "", buttons : [], whispered : false}) {
+	let content = "";
 	
-*/
-
-/*
-    _onRollSkill(event) {
-        event.preventDefault();
-        const element = event.currentTarget;
-        const itemId = $(element).data("item-id");
-        if (itemId) {
-            //FIND OWNED SKILL ITEM AND CREARE ROLL DIALOG
-            const skill = this.actor.items.find((element) => element.id == itemId);
-            const attName = skill.system.attribute;
-            // Apply any modifiers from items or crits
-            const diceTotals = this._getRollModifiers(skill);
-            diceTotals.gearDiceTotal = Math.max(0, diceTotals.gearDiceTotal)
-
-            // SEE IF WE CAN USE SKILL KEY TO TRANSLATE THE NAME
-            let skillName = "";
-            if (skill.system.skillKey == "") {
-                skillName = skill.name;
-            } else {
-                skillName = game.i18n.localize(`MYZ.SKILL_${skill.system.skillKey}`);
-            }
-
-            const applyedModifiersInfo = this._getModifiersInfo(diceTotals);
-            //console.warn(applyedModifiersInfo)
-
-            RollDialog.prepareRollDialog({
-                rollName: skillName,
-                attributeName: attName,
-                diceRoller: this.diceRoller,
-                baseDefault: diceTotals.baseDiceTotal,
-                skillDefault: diceTotals.skillDiceTotal,
-                gearDefault: diceTotals.gearDiceTotal,
-                modifierDefault: 0,
-                applyedModifiers: applyedModifiersInfo,
-                actor: this.actor,
-                skillItem: skill
-            });
-        }
-    }
+	content = content + '<div class="myz chat-item">';
+	content = content + '<div class="border">';
 	
-	*/
+	if (infos.title) {
+		content = content + `<h3> ${replacewords(infos.title, {actorname : actor.name})} </h3>`;
+	}
+	
+	if (infos.subtitle) {
+		content = content + `<h4> ${replacewords(infos.subtitle, {actorname : actor.name})} </h4>`;
+	}
+	
+	if (infos.description) {
+		content = content + `<div> ${infos.description} </div>`;
+	}
+	
+	if (infos.images) {
+		for (let image of infos.images) {
+			content = content + `<img src="${image}">`;
+		}
+	}
+	
+	if (infos.buttons) {
+		for (let buttonid of Object.keys(infos.buttons)) {
+			content = content + `<button class="button" id="${buttonid}"'>${infos.buttons[buttonid].label}</button>`;
+		}
+	}
+	
+	let whisper = [];
+	
+	if (infos.whispered) {
+		whisper.push(game.user.id);
+	}
+	
+	content = content + '</div>';
+	content = content + '</div>';
+	
+	let message = await ChatMessage.create({user: game.user.id, content : content, whisper : whisper}); //CHAT MESSAGE
+	
+	let messagehtml = $(document).find(`li.chat-message[data-message-id="${message.id}"]`);
+
+	if (infos.buttons) {
+		for (let buttonid of Object.keys(infos.buttons)) {
+			messagehtml.find(`button#${buttonid}`)[0].onclick = infos.buttons[buttonid].onclick;
+		}
+	}
+}
+
+function replacewords(text, words = {}){
+	let localtext = text;
+	
+	for (let word of Object.keys(words)) {
+		localtext = localtext.replace("{" + word + "}", words[word]);
+	}
+		
+	return localtext;
+}
+
+export { ModuleName, getTooltipDetails, openRollDialoge, openItemRollDialoge, openArmorRollDialoge, pushRoll, innerHTMLselector, postChatCard, replacewords }

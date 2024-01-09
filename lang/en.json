@@ -59,6 +59,13 @@
 			"Skills"					: "Opens/closes the Attributes & Skills menu"
 		},
 		
+		"Messages" : {
+			"Abilityuse" : {
+				"Title"					: "You used {AbilityName} using {AbilityCost} {AbilityCostName}:",
+				"Button"				: "Roll missfire"
+			}
+		},
+		
 		"Settings" : {
 			"useXPautomation" : {
 				"name"					: "Use XP automation",
@@ -111,6 +118,10 @@
 			"ShowSkills" : {
 				"name"					: "Show skills button",
 				"descrp"				: "If a button for skills should be shown in the action group"				
+			},
+			"specialactionstochat" : {
+				"name"					: "Special actions to chat",
+				"descrp"				: "If the description of special actions should be posted in the chat when used"
 			},
 			"UseDiceCircles" : {
 				"name"					: "Use dice symbols",
