@@ -3,6 +3,8 @@ import {ModuleName, getTooltipDetails, openRollDialoge, openItemRollDialoge, ope
 import {openNewInput} from "./popupInput.js";
 import {gainXPWindow} from "./levelup.js";
 
+const DiceSound = "sounds/dice.wav";
+
 Hooks.on("argonInit", (CoreHUD) => {
     const ARGON = CoreHUD.ARGON;
   
@@ -645,8 +647,12 @@ Hooks.on("argonInit", (CoreHUD) => {
 				}
 				
 				if (used) {
+					await this.item.sendToChat();
+										
 					if (game.settings.get(ModuleName, "AutoRollMissfires")) {
 						let roll = new Roll(`${consumeamount}d6`);
+						
+						AudioHelper.play({src: DiceSound, volume: 1}); //SOUND
 						
 						let buttons = {};
 						
@@ -669,10 +675,7 @@ Hooks.on("argonInit", (CoreHUD) => {
 						}
 						
 						postChatCard(this.actor, {title : "", subtitle : replacewords(game.i18n.localize(ModuleName + ".Messages.Abilityuse.Title"), {AbilityName : this.item.name, AbilityCost : consumeamount, AbilityCostName : game.i18n.localize("MYZ.RESOURCE_POINTS_" + this.actor.system.creatureType.toUpperCase())}), images : images, description : "", buttons : buttons, whispered : true});
-						
 					}
-					
-					this.item.sendToChat();
 				}
 			}
 			
