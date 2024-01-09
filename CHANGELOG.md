@@ -1,3 +1,6 @@
+## v1.3.1
+- Fixed bug that prevented the "SKill" slow action button from working
+
 ## v1.3.0
 - Added first part of automatic character advancement
   - Added world setting to turn this feature on/off
