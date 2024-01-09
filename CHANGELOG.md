@@ -1,3 +1,7 @@
+## v1.3.3
+- switched order of ability chat card and missfire chat card
+- added dice sound for missfire rolls
+
 ## v1.3.2
 - Added world setting Special actions to chat to post the description of used special actions to chat
 - The result of the missfire dice for abilities will now be posted to the chat
