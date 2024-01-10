@@ -61,7 +61,7 @@
 		
 		"Messages" : {
 			"Abilityuse" : {
-				"Title"					: "You used {AbilityName} using {AbilityCost} {AbilityCostName}:",
+				"Title"					: "You used {AbilityName} consuming {AbilityCost} {AbilityCostName}:",
 				"Button"				: "Roll missfire"
 			}
 		},

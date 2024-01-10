@@ -100,16 +100,19 @@ async function getTooltipDetails(item, actortype) {
 function openRollDialoge(rollType, rollName, rollActor, rollitem = undefined) { //adapted from MYZ system code
 	let rollData = {};
 	
-	let applyedModifiersInfo;
+	let rollModifiers;
 	
 	switch (rollType) {
 		case "skill":
 			const skill = rollActor.items.find(item => item.type == rollType && item.system.skillKey == rollName);
 			
+			const attribute = rollActor.system.attributes[skill.system.attribute];
+			
 			const diceTotals = rollActor.sheet._getRollModifiers(skill);
             diceTotals.gearDiceTotal = Math.max(0, diceTotals.gearDiceTotal);
 			
-			applyedModifiersInfo = rollActor.sheet._getModifiersInfo(diceTotals);
+			rollModifiers = rollActor.sheet._getRollModifiers(skill);
+			rollModifiers.gearDiceTotal = Math.max(0, rollModifiers.gearDiceTotal);
 			
             let skillName = "";
             if (skill.system.skillKey == "") {
@@ -123,11 +126,15 @@ function openRollDialoge(rollType, rollName, rollActor, rollitem = undefined) { 
 			
 				attributeName : skill.system.attribute,
 			
+				base: {default:attribute.value, total: rollModifiers.baseDiceTotal, modifiers: rollModifiers.modifiersToAttributes},
+                skill: {default:skill.system.value, total: rollModifiers.skillDiceTotal, modifiers: rollModifiers.modifiersToSkill},
+                gear: {default:0, total: rollModifiers.gearDiceTotal, modifiers: rollModifiers.modifiersToGear},
+				
 				baseDefault: diceTotals.baseDiceTotal,
 				skillDefault: diceTotals.skillDiceTotal,
 				gearDefault: diceTotals.gearDiceTotal,
 				
-				applyedModifiers: applyedModifiersInfo,
+				applyedModifiers: null,
 				
 				skillItem : skill
 			}
@@ -137,6 +144,7 @@ function openRollDialoge(rollType, rollName, rollActor, rollitem = undefined) { 
 			
 			const attributeName = `MYZ.ATTRIBUTE_${rollName.toUpperCase()}_${rollActor.system.creatureType.toUpperCase()}`;
 			
+			/*
 			const items = rollActor.items.filter(item => item.system.modifiers != undefined);
 			const modifierItems = items.filter(item => item.system.modifiers[rollName] != 0);
 			let attributeModifiers = [];
@@ -156,24 +164,44 @@ function openRollDialoge(rollType, rollName, rollActor, rollitem = undefined) { 
 				modifiersToAttributes: attributeModifiers,
 				modifiersToGear: []
 			});
+			*/
+			rollModifiers = rollActor.sheet._getAttibuteModifiers(rollName)        
+			rollModifiers.skillDiceTotal = 0;
+			rollModifiers.modifiersToSkill = [];
+			rollModifiers.gearDiceTotal = 0;
+			rollModifiers.modifiersToGear = [];
 			
 			rollData = {
 				rollName: attributeName, //this is confusing
 				
 				attributeName: rollName, //isn't it?
 				
-				baseDefault: baseDiceTotal,
-				applyedModifiers: applyedModifiersInfo
+				base: {default:attributeValue, total: rollModifiers.baseDiceTotal, modifiers:rollModifiers.modifiersToAttributes},
+				skill: {default:0, total: rollModifiers.skillDiceTotal, modifiers:rollModifiers.modifiersToSkill},
+				gear: {default:0, total: rollModifiers.gearDiceTotal, modifiers:rollModifiers.modifiersToGear},            
+				modifierDefault: 0,
+				applyedModifiers: null
 			}
 			break;
 	}
 	
 	if (rollitem) {
+		rollModifiers.gearDiceTotal += parseInt(rollitem.system.bonus.value);
+        rollModifiers.gearDiceTotal = Math.max(0, rollModifiers.gearDiceTotal);
+		
+		rollData.itemId = rollitem.id;
+		rollData.gear = {default:0, total: rollModifiers.gearDiceTotal, modifiers: rollModifiers.modifiersToGear},
+		rollData.modifierDefault = rollitem.system.skillBonus,
+        rollData.artifactDefault = rollitem.system.artifactBonus || 0,
+		rollData.damage = rollitem.system.damage,
+		rollData.rollName = rollitem.name;
+		/*
 		rollData.gearDefault = Math.max(parseInt(rollitem.system.bonus.value), 0),
 		rollData.modifierDefault = rollitem.system.skillBonus,
 		rollData.artifactDefault = rollitem.system.artifactBonus || 0,
 		rollData.damage = rollitem.system.damage,
 		rollData.rollName = rollitem.name;
+		*/
 	}
 	
 	game.myz.RollDialog.prepareRollDialog({...{
@@ -217,7 +245,8 @@ function openArmorRollDialoge (actor) {
 	game.myz.RollDialog.prepareRollDialog({
 		rollName: game.i18n.localize("MYZ.ARMOR"),
 		diceRoller: actor.sheet.diceRoller,
-		gearDefault: actor.system.armorrating.value
+		gear: {default:actor.system.armorrating.value, total: actor.system.armorrating.value, modifiers: null}
+		//gearDefault: actor.system.armorrating.value
     });
 }
 
