@@ -1,3 +1,6 @@
+## v1.3.5
+- Improved Argon Popup style and added theme to weapon popups
+  
 ## v1.3.4
 - Fixed roll bugs caused by last system update
 
