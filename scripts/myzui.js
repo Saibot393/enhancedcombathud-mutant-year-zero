@@ -5,6 +5,17 @@ import {gainXPWindow} from "./levelup.js";
 
 const DiceSound = "sounds/dice.wav";
 
+Hooks.on("renderDialog", (dialog, element, content) => {
+	setTimeout(() => {
+		if (element.hasClass("ech-highjack-window")) {
+			for (let input of element.find("input")) {
+				input.style.color = "white";
+			}
+		}
+    }, 50);
+
+});
+
 Hooks.on("argonInit", (CoreHUD) => {
     const ARGON = CoreHUD.ARGON;
   
@@ -596,6 +607,8 @@ Hooks.on("argonInit", (CoreHUD) => {
 		
 		async _onLeftClick(event) {
 			var used = false;
+			
+			ui.ARGON.interceptNextDialog(event.currentTarget.closest(".item-button"))
 			
 			if (this.item.type == "weapon") {
 				if (game.settings.get(ModuleName, "ConsumeBullets") && this.quantity) {
