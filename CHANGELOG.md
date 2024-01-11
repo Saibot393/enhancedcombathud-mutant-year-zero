@@ -1,3 +1,6 @@
+## v1.3.4
+- Fixed roll bugs caused by last system update
+
 ## v1.3.3
 - switched order of ability chat card and missfire chat card
 - added dice sound for missfire rolls
