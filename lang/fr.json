@@ -1,0 +1,137 @@
+{
+	"enhancedcombathud-mutant-year-zero" : {
+		"Titles" : {
+			"accept"					: "Accepter",
+			"close"						: "Fermer",
+			"ActionAction"				: "ACTIONS",
+			"ManeuverAction"			: "MANOEUVRES",
+			"ReAction"					: "REACTIONS",
+			"Flee"						: "Fuir",
+			"WPG"						: "Saisie",
+			"Survey"					: "Survey",
+			"TreatInjuries"				: "Soigner les blessures",
+			"DrawWeapon"				: "Dégaîner",
+			"Standup"					: "Se relever",
+			"Move"						: "Déplacement",
+			"TakeCover"					: "Se mettre à couvert",
+			"Dodge"						: "Esquiver",
+			"Parry"						: "Parer",
+			"BreakFree"					: "Se dégager",
+			"Chase"						: "Poursuivre",
+			"Help"						: "Aider",
+			"Hinder"					: "Gêner",
+			"Reload"					: "Recharger",
+			"Defend"					: "Défense",
+			"ResourceConsume"			: "Consommation de ressource",
+			"HowmanyResources"			: "Combien de points voulez-vous dépenser ?",
+			
+			"LevelUP"					: "Trigger character advancement",
+			"openXPoptionsmenu"			: "Configure Experince options",
+			"XPOptions"					: "Experience Options",
+			"defaultXPOption" : {
+				"name"					: "New Experience option"
+			},
+			"addXPOption"				: "Add Experience option",
+			"confirmChanges"			: "Confirm and save",
+			"OpenXPMenu"				: "Open character advancement menu",
+			"CharacterAdvancement"		: "Character advancement",
+			"CheckWhichApplies"			: "Check all questions you can answer with \"yes\":",
+			"confirmXP"					: "Confirm"
+		},
+		
+		"Descriptions" : {
+			"Flee"						: "See Mutant Year Zero core rules book p.??",
+			"WPG"						: "See Mutant Year Zero core rules book p.??",
+			"Survey"					: "See Mutant Year Zero core rules book p.??",
+			"TreatInjuries"				: "See Mutant Year Zero core rules book p.??",
+			"DrawWeapon"				: "See Mutant Year Zero core rules book p.??",
+			"Standup"					: "See Mutant Year Zero core rules book p.??",
+			"Move"						: "See Mutant Year Zero core rules book p.??",
+			"TakeCover"					: "See Mutant Year Zero core rules book p.??",
+			"Dodge"						: "See Mutant Year Zero core rules book p.??",
+			"Parry"						: "See Mutant Year Zero core rules book p.??",
+			"BreakFree"					: "See Mutant Year Zero core rules book p.??",
+			"Chase"						: "See Mutant Year Zero core rules book p.??",
+			"Help"						: "See Mutant Year Zero core rules book p.??",
+			"Hinder"					: "See Mutant Year Zero core rules book p.??",
+			"Reload"					: "See Mutant Year Zero core rules book p.??",
+			"Defend"					: "See Mutant Year Zero core rules book p.??",
+			"Skills"					: "Opens/closes the Attributes & Skills menu"
+		},
+		
+		"Messages" : {
+			"Abilityuse" : {
+				"Title"					: "You used {AbilityName} consuming {AbilityCost} {AbilityCostName}:",
+				"Button"				: "Roll missfire"
+			}
+		},
+		
+		"Settings" : {
+			"useXPautomation" : {
+				"name"					: "Use XP automation",
+				"descrp"				: "If a button should be shown in the control menu to trigger automatic character advancement for players"
+			},
+			"InjurieTable" : {
+				"name"					: "Critical injuries roll table",
+				"descrp"				: "The table rolled when the strength falls to 0 (ID of table)"
+			},
+			"HMissfireTable" : {
+				"name"					: "Contact Missfire table",
+				"descrp"				: "The table rolled when a contact missfires (ID der Tabelle)"
+			},
+			"MMissfireTable" : {
+				"name"					: "Mutation Missfire table",
+				"descrp"				: "The table rolled when a contact missfires (ID der Tabelle)"
+			},
+			"AMissfireTable" : {
+				"name"					: "Animal power Missfire table",
+				"descrp"				: "The table rolled when an animal power missfires (ID der Tabelle)"
+			},
+			"RMissfireTable" : {
+				"name"					: "Module Missfire table",
+				"descrp"				: "The table rolled when a module missfires (ID der Tabelle)"
+			},
+			"AutoRollInjuries" : {
+				"name"					: "Automatically roll injuries",
+				"descrp"				: "If critical injuries should be rolled automatically when the strength falls to 0"				
+			},
+			"ConsumeResourcePoints" : {
+				"name"					: "Consume resource points",
+				"descrp"				: "If resource points should be consumed on ability use"				
+			},
+			"AutoRollMissfires" : {
+				"name"					: "Automatically roll Missfires",
+				"descrp"				: "If Missfires should be rolled automatically when a 1 is rolled on resource-point consumption"				
+			},
+			"AskResourcePointAmount" : {
+				"name"					: "Ask for resource point consumption",
+				"descrp"				: "If the use of an ability should trigger a popup asking how many resource points should be consumed"				
+			},
+			"ConsumeBullets" : {
+				"name"					: "Consume Bullets",
+				"descrp"				: "If bullets should be consumed when a ranged weapon is used"				
+			},
+			"ShowTalents" : {
+				"name"					: "Show talents button",
+				"descrp"				: "If a button for talents should be shown"				
+			},
+			"ShowSkills" : {
+				"name"					: "Show skills button",
+				"descrp"				: "If a button for skills should be shown in the action group"				
+			},
+			"specialactionstochat" : {
+				"name"					: "Special actions to chat",
+				"descrp"				: "If the description of special actions should be posted in the chat when used"
+			},
+			"UseDiceCircles" : {
+				"name"					: "Use dice symbols",
+				"descrp"				: "If dice symbols instead of numbers should be used for Skills and Attributes"				
+			}
+		}
+	},
+	
+    "enhancedcombathud.themeOptions.mainAction" : "Action Colors",
+    "enhancedcombathud.themeOptions.bonusAction" : "Maneuver Colors",
+    "enhancedcombathud.themeOptions.freeAction" : "Not used by Argon MYZ",
+    "enhancedcombathud.themeOptions.reaction" : "Reaction Colors"
+}
