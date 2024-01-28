@@ -1,3 +1,6 @@
+## v1.3.7
+- Added report card for automated experience point gain
+
 ## v1.3.6
 - Added french translation (thanks to [Kariaudhanaur](https://github.com/Kariaudhanaur))
 
