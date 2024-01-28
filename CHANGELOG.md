@@ -1,3 +1,6 @@
+## v1.3.6
+- Added french translation (thanks to [Kariaudhanaur](https://github.com/Kariaudhanaur))
+
 ## v1.3.5
 - Improved Argon Popup style and added theme to weapon popups
   
