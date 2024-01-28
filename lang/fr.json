@@ -63,7 +63,8 @@
 			"Abilityuse" : {
 				"Title"					: "You used {AbilityName} consuming {AbilityCost} {AbilityCostName}:",
 				"Button"				: "Roll missfire"
-			}
+			},
+			"GainedXP" 					: "{Player} gained {XP} experience points:"
 		},
 		
 		"Settings" : {

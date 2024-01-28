@@ -1,4 +1,4 @@
-import {ModuleName} from "./utils.js";
+import {ModuleName, replacewords} from "./utils.js";
 
 const ConfirmIcon = "fa-solid fa-check";
 const AddIcon = "fa-solid fa-plus";
@@ -180,12 +180,17 @@ class gainXPWindow extends Application {
 		
 		let entries = HTML.find(`div.XPoption`);
 		
+		let messageEntries = "";
+		
 		const settingKeys = Object.keys(defaultXPChoice);
 		
 		entries.each((number, element) => {
 			let id = $(element).attr("name");
 			
 			if (id != "header") {
+				console.log();
+				messageEntries = messageEntries + `<div> <input type="checkbox" ${valueofInput($(element).find('input[type="checkbox"]')) ? "checked" : ""} disabled> <label>${$(element).find('label')[0].innerHTML}</label> </div>`;
+				
 				if (valueofInput($(element).find(`input[type="checkbox"]`))) {
 					gainedXP = gainedXP + 1;
 				}
@@ -196,6 +201,12 @@ class gainXPWindow extends Application {
 		
 		await this.actor.update({system : {xp : {value : targetvalue}}});
 		this.actor.setFlag(ModuleName, "levelup", false);
+		
+		let chatMessage = "<div>";
+		chatMessage = chatMessage + `<label>${replacewords(game.i18n.localize(ModuleName + ".Messages.GainedXP"), {Player : game.user.name, XP : gainedXP})}</label>`;
+		chatMessage = chatMessage + messageEntries;
+		chatMessage = chatMessage + "</div>";
+		await ChatMessage.create({user: game.user.id, content : chatMessage}); //CHAT MESSAGE
 	}
 }
 

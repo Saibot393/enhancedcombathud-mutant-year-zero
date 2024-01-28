@@ -608,7 +608,7 @@ Hooks.on("argonInit", (CoreHUD) => {
 		async _onLeftClick(event) {
 			var used = false;
 			
-			ui.ARGON.interceptNextDialog(event.currentTarget.closest(".item-button"))
+			ui.ARGON.interceptNextDialog(event.currentTarget.closest(".item-button"));
 			
 			if (this.item.type == "weapon") {
 				if (game.settings.get(ModuleName, "ConsumeBullets") && this.quantity) {

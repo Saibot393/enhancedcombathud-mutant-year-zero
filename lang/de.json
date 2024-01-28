@@ -63,7 +63,8 @@
 			"Abilityuse" : {
 				"Title"					: "Du hast {AbilityName} benutzt und dabei {AbilityCost} {AbilityCostName} verbraucht:",
 				"Button"				: "Fehlzündung würfeln"
-			}
+			},
+			"GainedXP" 					: "{Player} hat {XP} Erfahrungspunkte erhalten:"
 		},
 		
 		"Settings" : {
