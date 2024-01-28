@@ -188,7 +188,6 @@ class gainXPWindow extends Application {
 			let id = $(element).attr("name");
 			
 			if (id != "header") {
-				console.log();
 				messageEntries = messageEntries + `<div> <input type="checkbox" ${valueofInput($(element).find('input[type="checkbox"]')) ? "checked" : ""} disabled> <label>${$(element).find('label')[0].innerHTML}</label> </div>`;
 				
 				if (valueofInput($(element).find(`input[type="checkbox"]`))) {
@@ -203,7 +202,7 @@ class gainXPWindow extends Application {
 		this.actor.setFlag(ModuleName, "levelup", false);
 		
 		let chatMessage = "<div>";
-		chatMessage = chatMessage + `<label>${replacewords(game.i18n.localize(ModuleName + ".Messages.GainedXP"), {Player : game.user.name, XP : gainedXP})}</label>`;
+		chatMessage = chatMessage + `<label>${replacewords(game.i18n.localize(ModuleName + ".Messages.GainedXP"), {Actor : this.actor.name, XP : gainedXP})}</label>`;
 		chatMessage = chatMessage + messageEntries;
 		chatMessage = chatMessage + "</div>";
 		await ChatMessage.create({user: game.user.id, content : chatMessage}); //CHAT MESSAGE
