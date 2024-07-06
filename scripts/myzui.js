@@ -347,7 +347,7 @@ Hooks.on("argonInit", (CoreHUD) => {
 			
 			let skillsButtons = [];
 			
-			if (skills) {
+			if (skills.length) {
 				skillsButtons = skills.map((skill) => {
 					const skillData = skill.system;
 					
@@ -454,7 +454,8 @@ Hooks.on("argonInit", (CoreHUD) => {
 		async _renderInner() {
 			await super._renderInner();
 			
-			const togglebar = this.element.querySelectorAll("li.ability-title")[2];
+			const barelements = this.element.querySelectorAll("li.ability-title");
+			const togglebar = barelements[barelements.length - 1];
 			togglebar.style.display = "flex";
 			togglebar.style.flexDirection = "row";
 			
@@ -474,7 +475,7 @@ Hooks.on("argonInit", (CoreHUD) => {
 			pushbutton.style.paddingBottom = "0px";
 			pushbutton.onclick = (event) => {event.stopPropagation(); pushRoll(this.actor);}
 			togglebar.appendChild(pushbutton);
-			
+
 			/*
 			spacerdiv = document.createElement("div"); //right spacer
 			spacerdiv.style.flexGrow = "1";
