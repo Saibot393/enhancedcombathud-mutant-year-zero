@@ -1,3 +1,8 @@
+## v1.4.0
+- The report card for used mutation will no longer be whispered and send to the normal chat instead
+- Added second part of automatic character advancement
+  - The advance indicator on the Argon HUD portrait can now be used to open an additional menu to spend xp on skills and talents if enough xp have been accumulated
+
 ## v1.3.7
 - Added report card for automated experience point gain
 
