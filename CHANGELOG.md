@@ -1,3 +1,6 @@
+## v2.0.0
+- v12 compatibility
+
 ## v1.4.0
 - The report card for used mutation will no longer be whispered and send to the normal chat instead
 - Added second part of automatic character advancement
