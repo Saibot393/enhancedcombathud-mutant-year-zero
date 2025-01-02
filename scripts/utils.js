@@ -104,7 +104,26 @@ function openRollDialoge(rollType, rollName, rollActor, rollitem = undefined) { 
 	
 	switch (rollType) {
 		case "skill":
-			const skill = rollActor.items.find(item => item.type == rollType && item.system.skillKey == rollName);
+			let skill = rollActor.items.find(item => item.type == rollType && item.system.skillKey == rollName);
+
+			if (!skill) {
+                skill = {
+                    system: {
+                        value: 0,
+						skillKey : rollName
+                    }
+                };
+
+				switch(rollName) {
+					case "FIGHT":
+					case "ASSAULT":
+						skill.system.attribute = "strength";
+						break;
+					case "SHOOT":
+						skill.system.attribute = "agility";
+						break;
+				}
+			}
 			
 			const attribute = rollActor.system.attributes[skill.system.attribute];
 			
@@ -236,7 +255,7 @@ function openItemRollDialoge(item, actor) {
 				skill = "SHOOT";
 				break;
 		}
-		
+		console.log(skill);
 		openRollDialoge("skill", skill, actor, item);
 	}
 }
