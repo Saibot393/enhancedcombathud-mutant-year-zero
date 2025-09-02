@@ -223,7 +223,7 @@ function openRollDialoge(rollType, rollName, rollActor, rollitem = undefined) { 
 		*/
 	}
 	
-	game.myz.RollDialog.prepareRollDialog({...{
+	let settings = {...{
 		rollName: "",
 		attributeName : "",
 		diceRoller: rollActor.sheet.diceRoller,
@@ -233,7 +233,16 @@ function openRollDialoge(rollType, rollName, rollActor, rollitem = undefined) { 
 		modifierDefault: 0,
 		actor : rollActor,
 		applyedModifiers: {}
-	}, ...rollData});
+	}, ...rollData}
+	
+	if (game.myz.RollDialog.prepareRollDialog) {
+		game.myz.RollDialog.prepareRollDialog(settings);
+	}
+	else {
+		if (game.myz.RollDialog.OpenRollDialog) {
+			game.myz.RollDialog.OpenRollDialog(settings);
+		}
+	}
 }
 
 function openItemRollDialoge(item, actor) {
@@ -255,7 +264,7 @@ function openItemRollDialoge(item, actor) {
 				skill = "SHOOT";
 				break;
 		}
-		console.log(skill);
+		
 		openRollDialoge("skill", skill, actor, item);
 	}
 }

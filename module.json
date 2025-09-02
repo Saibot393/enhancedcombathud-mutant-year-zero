@@ -7,10 +7,10 @@
     "name": "saibot"
     }
   ],
-  "version": "2.0.1",
+  "version": "3.0.0",
   "compatibility": {
     "minimum": "12",
-    "verified": "12"
+    "verified": "13"
   },
   "socket": "true",
   "languages": [
@@ -58,7 +58,7 @@
 	]
   },
   "url": "https://github.com/Saibot393/enhancedcombathud-mutant-year-zero",
-  "download": "https://github.com/Saibot393/enhancedcombathud-mutant-year-zero/archive/refs/tags/v2.0.1.zip",
+  "download": "https://github.com/Saibot393/enhancedcombathud-mutant-year-zero/archive/refs/tags/v3.0.0.zip",
   "manifest": "https://github.com/Saibot393/enhancedcombathud-mutant-year-zero/releases/latest/download/module.json",
   "readme": "https://github.com/Saibot393/enhancedcombathud-mutant-year-zero/blob/main/README.md",
   "changelog": "https://github.com/Saibot393/enhancedcombathud-mutant-year-zero/blob/main/CHANGELOG.md",

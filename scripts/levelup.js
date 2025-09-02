@@ -509,19 +509,32 @@ function fixXPoptionSetting(setting) {
 //ui
 function addBuilderButton(app, html, infos) {
 	if (game.user.isGM) {
-		const xpbutton = document.createElement("li");
-		xpbutton.classList.add("control-tool");
-		xpbutton.setAttribute("data-tool", "levelup");
-		xpbutton.setAttribute("data-tooltip", game.i18n.localize(ModuleName+".Titles.LevelUP"));
-		
-		const icon = document.createElement("i");
-		icon.classList.add("fa-solid", "fa-arrow-up");
-		
-		xpbutton.appendChild(icon);
-		
-		xpbutton.onclick = () => {game.socket.emit("module." + ModuleName, {functionname : "levelup", data : {}});}
+		if (game.release.generation <= 12 || app.activeControl == "tokens") {
+			let xpbutton = document.createElement("li");
+			
+			let toAdd = xpbutton;
+			if (game.release.generation > 12) {
+				toAdd = xpbutton;
+				xpbutton = document.createElement("button");
+				xpbutton.classList.add("icon", "control", "ui-control");
+				toAdd.appendChild(xpbutton);
+			}
+			
+			xpbutton.classList.add("control-tool", "toggle");
+			xpbutton.setAttribute("data-tool", "levelup");
+			xpbutton.setAttribute("role", "button");
+			xpbutton.setAttribute("data-tooltip", game.i18n.localize(ModuleName+".Titles.LevelUP"));
+			
+			const icon = game.release.generation > 12 ? xpbutton : document.createElement("i");
+			icon.classList.add("fa-solid", "fa-arrow-up");
+			
+			if (game.release.generation <= 12) xpbutton.appendChild(icon);
+			
+			xpbutton.onclick = () => {game.socket.emit("module." + ModuleName, {functionname : "levelup", data : {}});}
 
-		ui.controls.element[0].querySelector('[id="tools-panel-token"]').lastElementChild.after(xpbutton);
+			if (game.release.generation <= 12) ui.controls.element[0].querySelector('[id="tools-panel-token"]').lastElementChild.after(xpbutton)
+			else html.querySelector(`[id="scene-controls-tools"]`).appendChild(xpbutton);
+		}
 	}
 }
 
