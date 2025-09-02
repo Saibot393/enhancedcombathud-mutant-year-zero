@@ -1,3 +1,7 @@
+## v3.0.0
+- v13 compatibility
+- Update to the button descriptions (thanks to [Arokha](https://github.com/Arokha))
+
 ## v2.0.1
 - Small bug fix
 
